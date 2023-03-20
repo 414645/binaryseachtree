@@ -7,10 +7,10 @@ Node::Node() {
   cout << "blank node created" << endl;
   rightNode = NULL;
   leftNode = NULL;
-  thing = '0';
-  myNode = NULL;
+  //thing = '0';
+  //myNode = NULL;
 }
-
+/*
 Node::Node(char newThing) {
   //cout << newThing << " node created" << endl;
   rightNode = NULL;
@@ -22,6 +22,12 @@ Node::Node(Node* newThing) {
   rightNode = NULL;
   leftNode = NULL;
   myNode = newThing;
+}
+*/
+Node::Node(int newNumber) {
+  rightNode = NULL;
+  leftNode = NULL;
+  number = newNumber;
 }
 
 Node::~Node() {
@@ -39,11 +45,15 @@ void Node::setRight(Node* newRight) {
 void Node::setLeft(Node* newLeft) {
   leftNode = newLeft;
 }
+/*
 char Node::getThing() {
   return thing;
 }
 Node* Node::getNode() {
   return myNode;
+}*/
+int Node::getNumber() {
+  return number;
 }
 
 

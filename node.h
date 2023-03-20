@@ -7,8 +7,9 @@
 class Node {
 public:
   Node();
-  Node(char);
-  Node(Node*);
+  //Node(char);
+  //Node(Node*);
+  Node(int);
   ~Node();
   
   Node* getRight();
@@ -16,12 +17,14 @@ public:
   void setRight(Node*);
   void setLeft(Node*);
 
-  char getThing();
-  Node* getNode();
+  //char getThing();
+  //Node* getNode();
+  int getNumber();
 private:
   Node* rightNode;
   Node* leftNode;
-  char thing;
-  Node* myNode;
+  int number;
+  //char thing;
+  //Node* myNode;
 };
 #endif
