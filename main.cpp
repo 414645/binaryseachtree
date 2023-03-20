@@ -12,9 +12,15 @@ using namespace std;
 //seperate inputs with spaces (cin?)
 
 void print(Node* root);
-void add(Node* &root, int thing); //add int to thing
-void remove(Node* &root, int thing); //three cases here (one is root)
-bool search(Node* root, int thing); //possibly retruns
+
+void add(Node* root, int thing);
+//add int to thing
+
+void remove(Node* root, Node* previous,int thing);
+//three cases here (one is root)
+
+bool search(Node* root, int thing);
+//possibly retruns
 
 int main() {
   cout << "hello world" << endl;
@@ -38,15 +44,29 @@ int main() {
     }
     if (strcmp(input, "PRINT") == 0) {
       cout << "PRINT" << endl;
+      print(root);
     }
     if (strcmp(input, "REMOVE") == 0) {
       cout << "rm" << endl;
+      int thing;
+      cout << "what number would you like to remove?" << endl;
+      cin >> thing;
+      remove(root, NULL, thing);
     }
     if (strcmp(input, "SEARCH") == 0) {
       cout << "s" << endl;
+      int thing;
+      cout << "what number would you like to searfch for?" << endl;
+      cin >> thing;
+      if (search(root, thing) == true) {
+	cout << "found it" << endl;
+      }
     }
     if (strcmp(input, "ADD") == 0) {
       cout << "add" << endl;
+      //file vs console
+      int thing = 1;
+      add(root, thing);
     }
   }
 }
@@ -55,17 +75,37 @@ void print(Node* root) {
 
 }
 
-void add(Node* &root, int thing) {
+void add(Node* root, int thing) {
   //add int to thing
   if(root == NULL) {
     Node* newNode = new Node(thing);
+    root = newNode;
   }
-  
-  
+  else if (root->getNumber() > thing) {
+    add(root->getRight(), thing);
+  }
+  else {
+    add(root->getLeft(), thing);
+  }
 }
-void remove(Node* &root, int thing) {
+void remove(Node* root, Node* previous, int thing) {
   //three cases here (one is root)
-  
+  if(root == NULL) {
+    cout << "failure " << endl;
+  }
+  else if (root->getNumber() == thing) {
+    cout << thing << endl;
+    //remove current thing
+    //if ...
+    
+    
+  }
+  else if (root->getNumber() > thing) {
+    //remove(root->getRight());
+  }
+  else {
+    //remove(root->getLeft());
+  }
   
 }
 bool search(Node* root, int thing) {
