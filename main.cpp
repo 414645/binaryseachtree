@@ -11,9 +11,9 @@ using namespace std;
 //nodes can have anything from 1 to 999
 //seperate inputs with spaces (cin?)
 
-void print(Node* root);
+void print(Node* current, int tab);
 
-void add(Node* root, int thing);
+void add(Node* &root, Node* current, Node* previous, int thing);
 //add int to thing
 
 void remove(Node* root, Node* previous,int thing);
@@ -44,7 +44,7 @@ int main() {
     }
     if (strcmp(input, "PRINT") == 0) {
       cout << "PRINT" << endl;
-      print(root);
+      print(root, 0);
     }
     if (strcmp(input, "REMOVE") == 0) {
       cout << "rm" << endl;
@@ -66,26 +66,45 @@ int main() {
       cout << "add" << endl;
       //file vs console
       int thing = 1;
-      add(root, thing);
+      add(root, root, NULL, thing);
     }
   }
 }
 
-void print(Node* root) {
-
+//a fun program I made back in hashtable simplified for a tree
+void print(Node* current, int tab) {
+  if (current != NULL) {
+    //call print on left node
+    print(current->getLeft(), tab + 1);
+    //print myself with correct tab number
+    for (int a = 0; a < tab; a++) {
+      cout << "    ";
+    }
+    cout << current->getNumber() << endl;
+    //call print on right node
+    print(current->getRight(), tab + 1);
+  }
 }
 
-void add(Node* root, int thing) {
+void add(Node* &root, Node* current, Node* previous, int thing) {
   //add int to thing
   if(root == NULL) {
+    cout << "hello" << endl;
     Node* newNode = new Node(thing);
     root = newNode;
+    cout << root->getNumber();
+  }
+  else if(current == NULL) {
+    cout << "hi" << endl;
+    //Node* newNode = new Node(thing);
+    //current = newNode;
+    //cout << current->getNumber();
   }
   else if (root->getNumber() > thing) {
-    add(root->getRight(), thing);
+    add(root, current->getRight(), current, thing);
   }
   else {
-    add(root->getLeft(), thing);
+    add(root, current->getLeft(), current, thing);
   }
 }
 void remove(Node* root, Node* previous, int thing) {
