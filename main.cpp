@@ -65,8 +65,36 @@ int main() {
     if (strcmp(input, "ADD") == 0) {
       cout << "add" << endl;
       //file vs console
-      int thing = 1;
-      add(root, root, NULL, thing);
+      char input;
+      cout << "Would you like to add from a file (1) ";
+      cout << "or the console (2)?" << endl;
+      cin >> input;
+      if (input == '1') {
+	//file handeling
+      }
+      else if (input == '2') {
+	cout << "Enter numbers seperated by spaces" << endl;
+	//input handling
+	//exept I don't want to for 3 digit numbers
+	//I coudl char 1 * 100 + char 2 * 10 + char 3 but
+	/*
+	bool loop = true;
+	while(loop) {
+	  cin >> input;
+	  if ((int)input > 47  && (int)input < 58) {
+	    cout << input << endl;
+	  }
+	  else {
+	    loop = false;
+	  }
+	}
+	*/
+	int thing;
+	for(int a = 0; a < 5; a++) {
+	  cin >> thing;
+	  add(root, root, NULL, thing);
+	}
+      }
     }
   }
 }
@@ -74,6 +102,7 @@ int main() {
 //a fun program I made back in hashtable simplified for a tree
 void print(Node* current, int tab) {
   if (current != NULL) {
+    //cout << "print: " << current->getNumber() << endl;
     //call print on left node
     print(current->getLeft(), tab + 1);
     //print myself with correct tab number
@@ -86,25 +115,42 @@ void print(Node* current, int tab) {
   }
 }
 
+//I don't think I will ever need to use previous but lazy
 void add(Node* &root, Node* current, Node* previous, int thing) {
-  //add int to thing
+  //do we need to replace head?
   if(root == NULL) {
-    cout << "hello" << endl;
     Node* newNode = new Node(thing);
     root = newNode;
-    cout << root->getNumber();
   }
   else if(current == NULL) {
-    cout << "hi" << endl;
-    //Node* newNode = new Node(thing);
-    //current = newNode;
-    //cout << current->getNumber();
+    cout << "something went wrong" << endl;
   }
-  else if (root->getNumber() > thing) {
-    add(root, current->getRight(), current, thing);
+  ///if bigger go right
+  else if (current->getNumber() > thing) {
+    if (current->getRight() != NULL) {
+      //go there
+      add(root, current->getRight(), current, thing);
+    }
+    else {
+      //add me there
+      Node* newNode = new Node(thing);
+      current->setRight(newNode);
+    }
+  }
+  //if we are smaller go left
+  else if (current->getNumber() < thing) {
+    if (current->getLeft() != NULL) {
+      //go there
+      add(root, current->getLeft(), current, thing);
+    }
+    else {
+      //add me there
+      Node* newNode = new Node(thing);
+      current->setLeft(newNode);
+    }
   }
   else {
-    add(root, current->getLeft(), current, thing);
+    cout << "Um..." << endl;
   }
 }
 void remove(Node* root, Node* previous, int thing) {
