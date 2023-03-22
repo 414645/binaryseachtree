@@ -173,6 +173,42 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
   }
   else if(root->getNumber() == thing) {
     cout << "delete root" << endl;
+    //remove current thing somehow
+
+    //if this is the only thing in the tree
+    if(current->getRight() == NULL && current->getLeft() == NULL) {
+      //just delete this one
+      root = NULL;
+      delete current;
+    }
+
+    //if there is one node
+    //it becomes root
+    else if(current->getRight() != NULL && current->getLeft() == NULL) {
+      root = current->getRight();
+      delete current;
+    }
+    //if there is one node (otherside)
+    else if(current->getLeft() != NULL  && current->getRight() == NULL) {
+      root = current->getLeft();
+      delete current;
+    }
+    
+    else if(current->getLeft() != NULL  && current->getRight() != NULL) {
+      //two chidren
+      //go right once, then left untill getLeft() = NULL
+      //delete that one
+      //then replace me with them
+      Node* temp = current->getRight();
+      while (temp->getLeft() != NULL) {
+	temp = temp->getLeft();
+      }
+      int replace = temp->getNumber();
+      remove(root, root, NULL, replace);
+      cout << "done" << endl;
+      current->setNumber(replace);
+      
+    }
   }
   else if (current->getNumber() == thing) {
     cout << thing << endl;
@@ -237,6 +273,7 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
     }
     
   }
+  //this is not the thing to delete so go find that thing
   else if (current->getNumber() > thing) {
     cout << "right" << endl;
     remove(root, current->getRight(), current, thing);
