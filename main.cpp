@@ -16,7 +16,7 @@ void print(Node* current, int tab);
 void add(Node* &root, Node* current, Node* previous, int thing);
 //add int to thing
 
-void remove(Node* root, Node* previous,int thing);
+void remove(Node* &root, Node* current, Node* previous,int thing);
 //three cases here (one is root)
 
 bool search(Node* root, int thing);
@@ -51,7 +51,7 @@ int main() {
       int thing;
       cout << "what number would you like to remove?" << endl;
       cin >> thing;
-      remove(root, NULL, thing);
+      remove(root, root,  NULL, thing);
     }
     if (strcmp(input, "SEARCH") == 0) {
       cout << "s" << endl;
@@ -90,10 +90,10 @@ int main() {
 	}
 	*/
 	int thing;
-	for(int a = 0; a < 5; a++) {
+	//for(int a = 0; a < 5; a++) {
 	  cin >> thing;
 	  add(root, root, NULL, thing);
-	}
+	  //}
       }
     }
   }
@@ -153,23 +153,97 @@ void add(Node* &root, Node* current, Node* previous, int thing) {
     cout << "Um..." << endl;
   }
 }
-void remove(Node* root, Node* previous, int thing) {
+void remove(Node* &root, Node* current, Node* previous, int thing) {
+  if (previous != NULL) {
+    //I just want to know if this was left or right node of previous
+    //this is not very useful but...
+    bool right = true;
+    if (previous->getNumber() > thing) {
+      right = true;
+    }
+    else {
+      right = false;
+    }
+  }
+      
   //three cases here (one is root)
-  if(root == NULL) {
-    cout << "failure " << endl;
+  //kindof, I am also treating head = null as seperate since by reference
+  if(current == NULL) {
+    cout << "Nothing to remove " << endl;
   }
-  else if (root->getNumber() == thing) {
+  else if(root->getNumber() == thing) {
+    cout << "delete root" << endl;
+  }
+  else if (current->getNumber() == thing) {
     cout << thing << endl;
-    //remove current thing
-    //if ...
-    
+    //remove current thing somehow
+
+    //if this is the end (leaf)
+    if(current->getRight() == NULL && current->getLeft() == NULL) {
+      //just delete this one
+      if (previous->getNumber() > thing) {
+	//right
+	previous->setRight(NULL);
+      }
+      else {
+	//left
+	previous->setLeft(NULL);
+      }
+      delete current;
+    }
+
+    //if there is one node
+    //we move the that one up
+    //it will work because of how they were added
+    else if(current->getRight() != NULL && current->getLeft() == NULL) {
+      if (previous->getNumber() > thing) {
+	//right
+	previous->setRight(current->getRight());
+      }
+      else {
+	//left
+	previous->setLeft(current->getRight());
+      }
+    }
+    //if there is one node (otherside)
+    else if(current->getLeft() != NULL  && current->getRight() == NULL) {
+      if (previous->getNumber() > thing) {
+	//right
+	previous->setRight(current->getLeft());
+      }
+      else {
+	//left
+	previous->setLeft(current->getLeft());
+      }
+    }
+
+    else if(current->getLeft() != NULL  && current->getRight() != NULL) {
+      //two chidren
+      //go right once, then left untill getLeft() = NULL
+      //delete that one
+      //then replace me with them
+      Node* temp = current->getRight();
+      while (temp->getLeft() != NULL) {
+	temp = temp->getLeft();
+      }
+      int replace = temp->getNumber();
+      remove(root, root, NULL, replace);
+      cout << "done" << endl;
+      current->setNumber(replace);
+      
+    }
+    else {
+      cout << "We can't remove that" << endl;
+    }
     
   }
-  else if (root->getNumber() > thing) {
-    //remove(root->getRight());
+  else if (current->getNumber() > thing) {
+    cout << "right" << endl;
+    remove(root, current->getRight(), current, thing);
   }
   else {
-    //remove(root->getLeft());
+    cout << "left" << endl;
+    remove(root, current->getLeft(), current, thing);
   }
   
 }

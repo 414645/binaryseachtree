@@ -55,6 +55,9 @@ Node* Node::getNode() {
 int Node::getNumber() {
   return number;
 }
+void Node::setNumber(int newNumber) {
+  number = newNumber;
+}
 
 
 

@@ -20,6 +20,7 @@ public:
   //char getThing();
   //Node* getNode();
   int getNumber();
+  void setNumber(int);
 private:
   Node* rightNode;
   Node* leftNode;
