@@ -1,5 +1,8 @@
 #include <iostream>
 
+#include <cstring>
+#include <fstream>
+
 #include "node.h"
 
 
@@ -71,6 +74,35 @@ int main() {
       cin >> input;
       if (input == '1') {
 	//file handeling
+	cout << "What is the name of the file?" << endl;
+        char word[80];
+	cin >> word;
+	//open file and go though it
+	ifstream myFile (word);
+	if (myFile.is_open()) {
+	  //while so keep going until hit end
+	  bool notQuit = true;
+	  while (notQuit) {
+	    //cin number
+	    int t = -1;
+	    myFile >> t;
+	    //cout << "t: " << t << endl;
+	    //file will stop overriding once it hits the end
+	    if (t >= 0) {
+	      //add it
+	      add(root, root, NULL, t);
+	    }
+	    else {
+	      notQuit = false;;
+	    }
+	  }
+	}
+	else {
+	  cout << "something went worng, ";
+	  cout << "please check your spelling of the file name" << endl;
+	}
+	myFile.close();
+	cout << "done";
       }
       else if (input == '2') {
 	cout << "Enter numbers seperated by spaces" << endl;
@@ -99,7 +131,7 @@ int main() {
   }
 }
 
-//a fun program I made back in hashtable simplified for a tree
+//a fun program I made back in hashtable simplified for a binary tree
 void print(Node* current, int tab) {
   if (current != NULL) {
     //cout << "print: " << current->getNumber() << endl;
@@ -115,7 +147,8 @@ void print(Node* current, int tab) {
   }
 }
 
-//I don't think I will ever need to use previous but lazy
+//I don't think I will ever need to use previous
+//but easy to have for if needed
 void add(Node* &root, Node* current, Node* previous, int thing) {
   //do we need to replace head?
   if(root == NULL) {
@@ -150,6 +183,7 @@ void add(Node* &root, Node* current, Node* previous, int thing) {
     }
   }
   else {
+    //duplicats are not allowed
     cout << "Um..." << endl;
   }
 }
@@ -172,8 +206,7 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
     cout << "Nothing to remove " << endl;
   }
   else if(root->getNumber() == thing) {
-    cout << "delete root" << endl;
-    //remove current thing somehow
+    //remove current, current = root
 
     //if this is the only thing in the tree
     if(current->getRight() == NULL && current->getLeft() == NULL) {
@@ -205,13 +238,11 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
       }
       int replace = temp->getNumber();
       remove(root, root, NULL, replace);
-      cout << "done" << endl;
       current->setNumber(replace);
       
     }
   }
   else if (current->getNumber() == thing) {
-    cout << thing << endl;
     //remove current thing somehow
 
     //if this is the end (leaf)
@@ -264,7 +295,7 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
       }
       int replace = temp->getNumber();
       remove(root, root, NULL, replace);
-      cout << "done" << endl;
+      //cout << "done" << endl;
       current->setNumber(replace);
       
     }
@@ -275,11 +306,11 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
   }
   //this is not the thing to delete so go find that thing
   else if (current->getNumber() > thing) {
-    cout << "right" << endl;
+    //cout << "right" << endl;
     remove(root, current->getRight(), current, thing);
   }
   else {
-    cout << "left" << endl;
+    //cout << "left" << endl;
     remove(root, current->getLeft(), current, thing);
   }
   
