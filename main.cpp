@@ -12,12 +12,13 @@ using namespace std;
 //binary search tree
 //should be able to add, remove and print in any order
 //nodes can have anything from 1 to 999
-//seperate inputs with spaces (cin?)
+//seperate inputs with spaces for add by file
 
 void print(Node* current, int tab);
+//print out the tree in a way that lets you see children
 
 void add(Node* &root, Node* current, Node* previous, int thing);
-//add int to thing
+//add thing to the binary tree
 
 void remove(Node* &root, Node* current, Node* previous,int thing);
 //three cases here (one is two children, one is one child, one is none)
