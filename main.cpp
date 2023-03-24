@@ -153,6 +153,15 @@ void print(Node* current, int tab) {
 //I don't think I will ever need to use previous
 //but easy to have for if needed
 void add(Node* &root, Node* current, Node* previous, int thing) {
+  //first check if it is a legal int to add
+  //(does it appear in the tree aready)
+  if (search(root, thing) == true) {
+    cout << thing << " is aready in the tree" << endl;
+    cout << "You may not add duplicate numbers to the tree" << endl;
+    return;
+  }
+
+  //Do the add fuction
   //do we need to replace head?
   if(root == NULL) {
     Node* newNode = new Node(thing);
