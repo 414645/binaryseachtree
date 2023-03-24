@@ -20,13 +20,15 @@ void add(Node* &root, Node* current, Node* previous, int thing);
 //add int to thing
 
 void remove(Node* &root, Node* current, Node* previous,int thing);
-//three cases here (one is root)
+//three cases here (one is two children, one is one child, one is none)
+//also I am handeling root differntlu since pas by refferece
 
-bool search(Node* root, int thing);
-//possibly retruns
+bool search(Node* current, int thing);
+//ture is found it, false is not found
 
 int main() {
-  cout << "hello world" << endl;
+  //cout << "hello world" << endl;
+  cout << "Type HELP for a list of commands" << endl;
   bool quit = false;
   char input[80];
   Node* root = NULL;
@@ -46,27 +48,27 @@ int main() {
       cout << "QUIT" << endl;
     }
     if (strcmp(input, "PRINT") == 0) {
-      cout << "PRINT" << endl;
+      cout << "Binary Search Tree:" << endl;
       print(root, 0);
     }
     if (strcmp(input, "REMOVE") == 0) {
-      cout << "rm" << endl;
       int thing;
       cout << "what number would you like to remove?" << endl;
       cin >> thing;
       remove(root, root,  NULL, thing);
     }
     if (strcmp(input, "SEARCH") == 0) {
-      cout << "s" << endl;
       int thing;
       cout << "what number would you like to searfch for?" << endl;
       cin >> thing;
       if (search(root, thing) == true) {
-	cout << "found it" << endl;
+	cout << thing << " is in the tree" << endl;
+      }
+      else {
+	cout << thing << " is not in the tree" << endl;
       }
     }
     if (strcmp(input, "ADD") == 0) {
-      cout << "add" << endl;
       //file vs console
       char input;
       cout << "Would you like to add from a file (1) ";
@@ -102,12 +104,13 @@ int main() {
 	  cout << "please check your spelling of the file name" << endl;
 	}
 	myFile.close();
-	cout << "done";
+	cout << "done" << endl;;
       }
       else if (input == '2') {
 	cout << "Enter numbers seperated by spaces" << endl;
 	//input handling
 	//exept I don't want to for 3 digit numbers
+	//do singe input at a time for now
 	//I coudl char 1 * 100 + char 2 * 10 + char 3 but
 	/*
 	bool loop = true;
@@ -315,8 +318,22 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
   }
   
 }
-bool search(Node* root, int thing) {
+bool search(Node* current, int thing) {
   //possibly retruns
-
-  return false;
+  if (current == NULL) {
+    return false;
+  }
+  else if(current->getNumber() == thing) {
+    return true;
+  }
+  else {
+    bool a = search(current->getRight(), thing);
+    bool b = search(current->getLeft(), thing);
+    if (a == true || b == true) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 }
