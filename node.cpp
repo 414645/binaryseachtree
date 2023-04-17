@@ -60,4 +60,17 @@ void Node::setNumber(int newNumber) {
 }
 
 
+Node* Node::getParent() {
+  return parent;
+}
+void Node::setParent(Node* newparent) {
+  parent = newparent;
+}
+int Node::getColor() {
+  return color;
+}
+void Node::setColor(int newcolor) {
+  color = newcolor;
+}
+
 

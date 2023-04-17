@@ -21,10 +21,17 @@ public:
   //Node* getNode();
   int getNumber();
   void setNumber(int);
+
+  Node* getParent();
+  void setParent(Node*);
+  int getColor();
+  void setColor(int);
 private:
   Node* rightNode;
   Node* leftNode;
   int number;
+  Node* parent;
+  int color;
   //char thing;
   //Node* myNode;
 };
