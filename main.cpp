@@ -14,6 +14,8 @@ using namespace std;
 //nodes can have anything from 1 to 999
 //seperate inputs with spaces for add by file
 
+//Working on making it a balanced tree with red black
+
 void print(Node* current, int tab);
 //print out the tree in a way that lets you see children
 
