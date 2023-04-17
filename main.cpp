@@ -15,6 +15,8 @@ using namespace std;
 //seperate inputs with spaces for add by file
 
 //Working on making it a balanced tree with red black
+//added color (black = 0 red = 1)
+//and am working on nodes knowing thier parents
 
 void print(Node* current, int tab);
 //print out the tree in a way that lets you see children
@@ -112,26 +114,9 @@ int main() {
       else if (input == '2') {
 	cout << "Enter numbers seperated by spaces" << endl;
 	//input handling
-	//exept I don't want to for 3 digit numbers
-	//do singe input at a time for now
-	//I coudl char 1 * 100 + char 2 * 10 + char 3 but
-	/*
-	bool loop = true;
-	while(loop) {
-	  cin >> input;
-	  if ((int)input > 47  && (int)input < 58) {
-	    cout << input << endl;
-	  }
-	  else {
-	    loop = false;
-	  }
-	}
-	*/
 	int thing;
-	//for(int a = 0; a < 5; a++) {
-	  cin >> thing;
-	  add(root, root, NULL, thing);
-	  //}
+	cin >> thing;
+	add(root, root, NULL, thing);
       }
     }
   }
@@ -169,6 +154,7 @@ void add(Node* &root, Node* current, Node* previous, int thing) {
   if(root == NULL) {
     Node* newNode = new Node(thing);
     root = newNode;
+    //root parent = NULL by default
   }
   else if(current == NULL) {
     cout << "something went wrong" << endl;
@@ -183,6 +169,12 @@ void add(Node* &root, Node* current, Node* previous, int thing) {
       //add me there
       Node* newNode = new Node(thing);
       current->setRight(newNode);
+
+      //added a Node to the Tree!!! handle balancing
+      //list parent
+      newNode->setParent(current);
+      //figure out balencing
+      
     }
   }
   //if we are smaller go left
@@ -195,6 +187,14 @@ void add(Node* &root, Node* current, Node* previous, int thing) {
       //add me there
       Node* newNode = new Node(thing);
       current->setLeft(newNode);
+
+      
+      //added a Node to the Tree!!! handle balancing
+      //same code as above!!!!!
+      //list parent
+      newNode->setParent(current);
+      //figure out balencing
+      
     }
   }
   else {
@@ -234,11 +234,15 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
     //it becomes root
     else if(current->getRight() != NULL && current->getLeft() == NULL) {
       root = current->getRight();
+      //root->parent is always null
+      root->setParent(NULL);
       delete current;
     }
     //if there is one node (otherside)
     else if(current->getLeft() != NULL  && current->getRight() == NULL) {
       root = current->getLeft();
+      //root->parent is always null
+      root->setParent(NULL);
       delete current;
     }
     
@@ -252,8 +256,13 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
 	temp = temp->getLeft();
       }
       int replace = temp->getNumber();
+      //call delete on the last one
       remove(root, root, NULL, replace);
+      
+      //set current to a copy of the last one
       current->setNumber(replace);
+      //update parent
+      current->setParent(temp->getParent());
       
     }
   }
@@ -281,10 +290,14 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
       if (previous->getNumber() > thing) {
 	//right
 	previous->setRight(current->getRight());
+	//update parent
+	current->getRight()->setParent(previous);
       }
       else {
 	//left
 	previous->setLeft(current->getRight());
+	//update parent
+	current->getRight()->setParent(previous);
       }
     }
     //if there is one node (otherside)
@@ -292,10 +305,14 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
       if (previous->getNumber() > thing) {
 	//right
 	previous->setRight(current->getLeft());
+	//update parent
+	current->getLeft()->setParent(previous);
       }
       else {
 	//left
 	previous->setLeft(current->getLeft());
+	//update parent
+	current->getLeft()->setParent(previous);
       }
     }
 
@@ -309,9 +326,12 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
 	temp = temp->getLeft();
       }
       int replace = temp->getNumber();
-      remove(root, root, NULL, replace);
+      remove(current, current, NULL, replace);
       //cout << "done" << endl;
       current->setNumber(replace);
+      
+      //update parent
+      current->setParent(temp->getParent());
       
     }
     else {

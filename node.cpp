@@ -7,27 +7,18 @@ Node::Node() {
   cout << "blank node created" << endl;
   rightNode = NULL;
   leftNode = NULL;
-  //thing = '0';
-  //myNode = NULL;
+  number = -1;
+  parent = NULL;
+  color = -1;
+  
 }
-/*
-Node::Node(char newThing) {
-  //cout << newThing << " node created" << endl;
-  rightNode = NULL;
-  leftNode = NULL;
-  thing = newThing;
-}
-
-Node::Node(Node* newThing) {
-  rightNode = NULL;
-  leftNode = NULL;
-  myNode = newThing;
-}
-*/
 Node::Node(int newNumber) {
   rightNode = NULL;
   leftNode = NULL;
   number = newNumber;
+  //default parent to NULL and color to black
+  parent = NULL;
+  color = 0;
 }
 
 Node::~Node() {

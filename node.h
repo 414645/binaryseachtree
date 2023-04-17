@@ -17,8 +17,6 @@ public:
   void setRight(Node*);
   void setLeft(Node*);
 
-  //char getThing();
-  //Node* getNode();
   int getNumber();
   void setNumber(int);
 
@@ -32,7 +30,5 @@ private:
   int number;
   Node* parent;
   int color;
-  //char thing;
-  //Node* myNode;
 };
 #endif
