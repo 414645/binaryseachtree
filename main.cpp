@@ -31,6 +31,14 @@ void remove(Node* &root, Node* current, Node* previous,int thing);
 bool search(Node* current, int thing);
 //ture is found it, false is not found
 
+//maintiar red-black tree properties after problems
+void insertRebalance();
+void deleteRebalance();
+
+//manipulating tree
+void leftRotate(Node* a, Node* b);
+void rightRotate(Node* a, Node* b);
+
 int main() {
   //cout << "hello world" << endl;
   cout << "Type HELP for a list of commands" << endl;
@@ -173,7 +181,10 @@ void add(Node* &root, Node* current, Node* previous, int thing) {
       //added a Node to the Tree!!! handle balancing
       //list parent
       newNode->setParent(current);
+      //new node is red by default
+      newNode->setColor(1);
       //figure out balencing
+      insertRebalance();
       
     }
   }
@@ -193,8 +204,10 @@ void add(Node* &root, Node* current, Node* previous, int thing) {
       //same code as above!!!!!
       //list parent
       newNode->setParent(current);
+      //new node is red by default
+      newNode->setColor(1);
       //figure out balencing
-      
+      insertRebalance();
     }
   }
   else {
@@ -368,4 +381,21 @@ bool search(Node* current, int thing) {
       return false;
     }
   }
+}
+
+void insertRebalance() {
+
+}
+
+void deleteRebalance() {
+
+}
+
+//manipulating tree
+void leftRotate(Node* a, Node* b) {
+
+}
+
+void rightRotate(Node* a, Node* b) {
+
 }
