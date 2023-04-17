@@ -19,7 +19,9 @@ using namespace std;
 //and am working on nodes knowing thier parents
 
 void print(Node* current, int tab);
-//print out the tree in a way that lets you see children
+//print out the tree in a way that lets you see children + parents + color
+void printTest(Node* current, int tab, bool color);
+//testprint can show less
 
 void add(Node* &root, Node* current, Node* previous, int thing);
 //add thing to the binary tree
@@ -60,9 +62,18 @@ int main() {
       cout << "SEARCH" << endl;
       cout << "QUIT" << endl;
     }
+    //multiple prints with varying levels of info
     if (strcmp(input, "PRINT") == 0) {
       cout << "Binary Search Tree:" << endl;
       print(root, 0);
+    }
+    if (strcmp(input, "PRINT1") == 0) {
+      cout << "Binary Search Tree(parentless):" << endl;
+      printTest(root, 0, true);
+    }
+    if (strcmp(input, "PRINT2") == 0) {
+      cout << "Binary Search Tree(basic):" << endl;
+      printTest(root, 0, false);
     }
     if (strcmp(input, "REMOVE") == 0) {
       int thing;
@@ -140,9 +151,56 @@ void print(Node* current, int tab) {
     for (int a = 0; a < tab; a++) {
       cout << "    ";
     }
-    cout << current->getNumber() << endl;
+    //cout a R or B before node for color
+    if (current->getColor() == 0) {
+      cout << "B";
+    }
+    else if (current->getColor() == 1) {
+      cout << "R";
+    }
+    //cout #
+    cout << current->getNumber();
+    //cout parrent
+    if (current->getParent() != NULL) {
+      cout << " p=" << current->getParent()->getNumber();
+    }
+    else {
+      cout << " p=NULL";
+    }
+    //end line
+    cout << endl;
+    
     //call print on right node
     print(current->getRight(), tab + 1);
+  }
+}
+
+//this prints without showing parent
+void printTest(Node* current, int tab, bool color) {
+  if (current != NULL) {
+    //cout << "print: " << current->getNumber() << endl;
+    //call print on left node
+    printTest(current->getLeft(), tab + 1, color);
+    //print myself with correct tab number
+    for (int a = 0; a < tab; a++) {
+      cout << "    ";
+    }
+    if(color == true) {
+      //cout a R or B before node for color
+      if (current->getColor() == 0) {
+	cout << "B";
+      }
+      else if (current->getColor() == 1) {
+	cout << "R";
+      }
+    }
+    //cout #
+    cout << current->getNumber();
+    //end line
+    cout << endl;
+    
+    //call print on right node
+    printTest(current->getRight(), tab + 1, color);
   }
 }
 
