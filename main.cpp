@@ -473,6 +473,16 @@ void insertRebalance(Node* newNode, Node* &root) {
     cout << "loc" << endl;
     if (nullUncle == true) {
       //3.2.1
+      
+      cout << "hi?" << endl;
+      if ( k->getParent() == gp->getRight() ) {
+	cout << "true" << endl;
+      }
+      cout << k->getNumber() << endl;
+      cout << k->getParent()->getNumber() << endl;
+      cout << gp->getRight()->getNumber() << endl;
+
+	
       cout << "nullUncle" << endl;
       if (k->getParent() == gp->getRight() &&  //p is rightchild of gp
 	  k->getParent()->getRight() == k) { //k is rightchild of p
