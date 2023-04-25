@@ -478,6 +478,7 @@ void insertRebalance(Node* newNode, Node* &root) {
 	  k->getParent()->getRight() == k) { //k is rightchild of p
 
 	cout << "left rotation" << endl;
+	print(root, 0);
 	leftRotate(gp, gp->getRight(), root);
       }
       //3.2.2
@@ -510,13 +511,25 @@ void deleteRebalance(Node* newNode, Node* &root) {
 
 //manipulating tree
 void leftRotate(Node* x, Node* y, Node* &root) { //& root or whatever
+  /*
+  cout << "  " << x->getLeft() << endl;
+  cout << "" << x << endl;
+  cout << "  " << x->getRight() << endl;
+  cout << endl;
+  cout << y << endl;
+  */
+  
   if(y->getLeft() != NULL) {
+    cout << "0" << endl;
     x->setRight(y->getLeft());
     y->getLeft()->setParent(x);
   }
   cout << "1" << endl;
   if (x->getParent() == NULL) {
     //y becomes root of the tree
+    cout << "help this was not tested" << endl;
+    root = y;
+    y->setParent(NULL);
   }
   //cout << "2" << endl;
   //added else so no seg fault
@@ -531,6 +544,7 @@ void leftRotate(Node* x, Node* y, Node* &root) { //& root or whatever
     x->getParent()->setRight(y);
   }
   cout << "3" << endl;
+  //was set left
   y->setLeft(x);
   x->setParent(y);
 }
