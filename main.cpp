@@ -478,7 +478,7 @@ void insertRebalance(Node* newNode, Node* &root) {
 	  k->getParent()->getRight() == k) { //k is rightchild of p
 
 	cout << "left rotation" << endl;
-	//leftRotate(gp, gp->getRight(), root);
+	leftRotate(gp, gp->getRight(), root);
       }
       //3.2.2
       else if (k->getParent() == gp->getRight() &&  //p is rightchild of gp
@@ -514,17 +514,23 @@ void leftRotate(Node* x, Node* y, Node* &root) { //& root or whatever
     x->setRight(y->getLeft());
     y->getLeft()->setParent(x);
   }
+  cout << "1" << endl;
   if (x->getParent() == NULL) {
     //y becomes root of the tree
   }
-  if(x->getParent()->getLeft() == x) {
+  //cout << "2" << endl;
+  //added else so no seg fault
+  else if(x->getParent()->getLeft() == x) {
+    cout << "2.1" << endl;
     y->setParent(x->getParent());
     x->getParent()->setLeft(y);
   }
   else {
+    cout << "2.2" << endl;
     y->setParent(x->getParent());
     x->getParent()->setRight(y);
   }
+  cout << "3" << endl;
   y->setLeft(x);
   x->setParent(y);
 }
