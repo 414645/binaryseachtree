@@ -34,12 +34,12 @@ bool search(Node* current, int thing);
 //ture is found it, false is not found
 
 //maintiar red-black tree properties after problems
-void insertRebalance();
-void deleteRebalance();
+void insertRebalance(Node* newNode, Node* &root);
+void deleteRebalance(Node* newNode, Node* &root);
 
 //manipulating tree
-void leftRotate(Node* a, Node* b);
-void rightRotate(Node* a, Node* b);
+void leftRotate(Node* x, Node* y, Node* &root);
+void rightRotate(Node* x, Node* y, Node* &root);
 
 int main() {
   //cout << "hello world" << endl;
@@ -242,7 +242,7 @@ void add(Node* &root, Node* current, Node* previous, int thing) {
       //new node is red by default
       newNode->setColor(1);
       //figure out balencing
-      insertRebalance();
+      insertRebalance(newNode, root);
       
     }
   }
@@ -265,7 +265,7 @@ void add(Node* &root, Node* current, Node* previous, int thing) {
       //new node is red by default
       newNode->setColor(1);
       //figure out balencing
-      insertRebalance();
+      insertRebalance(newNode, root);
     }
   }
   else {
@@ -441,19 +441,94 @@ bool search(Node* current, int thing) {
   }
 }
 
-void insertRebalance() {
+void insertRebalance(Node* newNode, Node* &root) {
+  cout << "insertRebalence" << endl;
+  Node* k = newNode;
+  //case 1
+  if (k->getParent() == NULL) {
+    k->setColor(0);
+  }
+  //case 2
+  if (k->getParent()->getColor() == 0) {
+    //do nothing
+  }
+  //case 3
+  if (k->getParent()->getColor() == 1) {
+    Node* gp = k->getParent()->getParent();
+    //set up for case 3.2 for a null uncle
+    bool nullUncle = false;
+    cout << "loc 1" << endl;
+    if (gp->getRight() == NULL || gp->getLeft() == NULL) {
+      cout << "working" << endl;
+      nullUncle = true;
+      
+    }
+    else if (gp->getRight()->getColor() == 0 ||
+	     gp->getLeft()->getColor() == 0) {
+      nullUncle = true;
+    }
+    //case 3.2
+    cout << "loc 2" << endl;
+    //nullUncle = true;
+    cout << "loc" << endl;
+    if (nullUncle == true) {
+      //3.2.1
+      cout << "nullUncle" << endl;
+      if (k->getParent() == gp->getRight() &&  //p is rightchild of gp
+	  k->getParent()->getRight() == k) { //k is rightchild of p
 
+	cout << "left rotation" << endl;
+	//leftRotate(gp, gp->getRight(), root);
+      }
+      //3.2.2
+      else if (k->getParent() == gp->getRight() &&  //p is rightchild of gp
+	       k->getParent()->getLeft() == k) { //k is leftchild of p
+	
+	cout << "right rotation" << endl;
+	//rightRotate(k->getParent(), k, root);
+	//do same thing as 3.2.1
+	insertRebalance(k, root);
+      }
+      //3.2.3
+      //3.2.4
+      //this is just a mess
+    }
+    //case 3.1
+    else if (gp->getRight()->getColor() == 1 &&
+	     gp->getLeft()->getColor() == 1) {
+      cout << "last thing" << endl;
+      gp->setColor(1);
+      gp->getRight()->setColor(0);
+      gp->getLeft()->setColor(0);
+    }
+  }
 }
 
-void deleteRebalance() {
+void deleteRebalance(Node* newNode, Node* &root) {
 
 }
 
 //manipulating tree
-void leftRotate(Node* a, Node* b) {
-
+void leftRotate(Node* x, Node* y, Node* &root) { //& root or whatever
+  if(y->getLeft() != NULL) {
+    x->setRight(y->getLeft());
+    y->getLeft()->setParent(x);
+  }
+  if (x->getParent() == NULL) {
+    //y becomes root of the tree
+  }
+  if(x->getParent()->getLeft() == x) {
+    y->setParent(x->getParent());
+    x->getParent()->setLeft(y);
+  }
+  else {
+    y->setParent(x->getParent());
+    x->getParent()->setRight(y);
+  }
+  y->setLeft(x);
+  x->setParent(y);
 }
 
-void rightRotate(Node* a, Node* b) {
+void rightRotate(Node* x, Node* y, Node* &root) {
 
 }
