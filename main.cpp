@@ -478,9 +478,9 @@ void insertRebalance(Node* newNode, Node* &root) {
       if ( k->getParent() == gp->getRight() ) {
 	cout << "true" << endl;
       }
-      cout << k->getNumber() << endl;
-      cout << k->getParent()->getNumber() << endl;
-      cout << gp->getRight()->getNumber() << endl;
+      //cout << k->getNumber() << endl;
+      //cout << k->getParent()->getNumber() << endl;
+      //cout << gp->getRight()->getNumber() << endl;
 
 	
       cout << "nullUncle" << endl;
@@ -489,7 +489,7 @@ void insertRebalance(Node* newNode, Node* &root) {
 
 	cout << "left rotation" << endl;
 	print(root, 0);
-	leftRotate(gp, gp->getRight(), root);
+	//leftRotate(gp, gp->getRight(), root);
       }
       //3.2.2
       else if (k->getParent() == gp->getRight() &&  //p is rightchild of gp
@@ -503,6 +503,24 @@ void insertRebalance(Node* newNode, Node* &root) {
       //3.2.3
       //3.2.4
       //this is just a mess
+      cout << "no fautl" << endl;
+      if (k->getParent() == gp->getLeft() &&  //p is lchild of gp
+	  k->getParent()->getLeft() == k) { //k is ltchild of p
+
+	cout << "! right rotation" << endl;
+	print(root, 0);
+	//swapped gp>right to left
+	leftRotate(gp, gp->getLeft(), root);
+      }
+      //3.2.2
+      else if (k->getParent() == gp->getLeft() &&  //p is leftchild of gp
+	       k->getParent()->getRight() == k) { //k is rchild of p
+	
+	cout << "! left rotation" << endl;
+	//rightRotate(k->getParent(), k, root);
+	//do same thing as 3.2.1
+	insertRebalance(k, root);
+      }
     }
     //case 3.1
     else if (gp->getRight()->getColor() == 1 &&
@@ -521,6 +539,11 @@ void deleteRebalance(Node* newNode, Node* &root) {
 
 //manipulating tree
 void leftRotate(Node* x, Node* y, Node* &root) { //& root or whatever
+  cout << "Rotate !left" << endl;
+  if (x == NULL || y == NULL) {
+    cout << "Can't rotate a null node" << endl;
+    exit(1);
+  }
   /*
   cout << "  " << x->getLeft() << endl;
   cout << "" << x << endl;
@@ -528,10 +551,17 @@ void leftRotate(Node* x, Node* y, Node* &root) { //& root or whatever
   cout << endl;
   cout << y << endl;
   */
+
+  //stop loops
+  x->setLeft(NULL);
   
-  if(y->getLeft() != NULL) {
+  //was get left
+  if(y->getRight() != NULL) {
+    //basicly we overwrite y.getright later so this is so no info is lost
+    //prob needs to be left like the stop loops one
     cout << "0" << endl;
     x->setRight(y->getLeft());
+    cout << ":" << x->getRight()->getNumber() << endl;
     y->getLeft()->setParent(x);
   }
   cout << "1" << endl;
@@ -540,6 +570,10 @@ void leftRotate(Node* x, Node* y, Node* &root) { //& root or whatever
     cout << "help this was not tested" << endl;
     root = y;
     y->setParent(NULL);
+    y->setColor(0);
+    
+    cout << y << endl;
+    //print(y, 0);
   }
   //cout << "2" << endl;
   //added else so no seg fault
@@ -555,7 +589,22 @@ void leftRotate(Node* x, Node* y, Node* &root) { //& root or whatever
   }
   cout << "3" << endl;
   //was set left
-  y->setLeft(x);
+  print(root, 0);
+  cout << y << endl;
+  cout << "info: " << y->getNumber() << endl;
+  cout << y->getLeft()->getNumber() << endl;
+  //cout << y->getRight()->getNumber() << endl;
+
+  //was left
+  y->setRight(x);
+
+
+  cout << x->getRight() << endl;
+  cout << x->getLeft() << endl;
+  cout << y << endl;
+  
+  
+  //print(root, 0);
   x->setParent(y);
 }
 
