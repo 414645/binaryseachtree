@@ -598,7 +598,6 @@ void leftRotate(Node* x, Node* y, Node* &root) { //& root or whatever
   //was left
   y->setRight(x);
 
-
   cout << x->getRight() << endl;
   cout << x->getLeft() << endl;
   cout << y << endl;
