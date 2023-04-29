@@ -16,7 +16,9 @@ using namespace std;
 
 //Working on making it a balanced tree with red black
 //added color (black = 0 red = 1)
-//and am working on nodes knowing thier parents
+//code got really complex and just unreadable with adding so ripped it out and
+//tried to make rotates and insertRebalance simple
+//and put comments down there on how they work
 
 void print(Node* current, int tab);
 //print out the tree in a way that lets you see children + parents + color
@@ -33,13 +35,13 @@ void remove(Node* &root, Node* current, Node* previous,int thing);
 bool search(Node* current, int thing);
 //ture is found it, false is not found
 
-//maintiar red-black tree properties after problems
+//maintian red-black tree properties after problems
 void insertRebalance(Node* newNode, Node* &root);
 void deleteRebalance(Node* newNode, Node* &root);
 
 //manipulating tree
-void leftRotate(Node* x, Node* y, Node* &root);
-void rightRotate(Node* x, Node* y, Node* &root);
+void leftRotate(Node* x, Node* &root);
+void rightRotate(Node* x, Node* &root);
 
 int main() {
   //cout << "hello world" << endl;
@@ -510,7 +512,7 @@ void insertRebalance(Node* newNode, Node* &root) {
 	cout << "! right rotation" << endl;
 	print(root, 0);
 	//swapped gp>right to left
-	leftRotate(gp, gp->getLeft(), root);
+	//leftRotate(gp, gp->getLeft(), root);
       }
       //3.2.2
       else if (k->getParent() == gp->getLeft() &&  //p is leftchild of gp
@@ -538,75 +540,68 @@ void deleteRebalance(Node* newNode, Node* &root) {
 }
 
 //manipulating tree
-void leftRotate(Node* x, Node* y, Node* &root) { //& root or whatever
-  cout << "Rotate !left" << endl;
-  if (x == NULL || y == NULL) {
-    cout << "Can't rotate a null node" << endl;
-    exit(1);
-  }
-  /*
-  cout << "  " << x->getLeft() << endl;
-  cout << "" << x << endl;
-  cout << "  " << x->getRight() << endl;
-  cout << endl;
-  cout << y << endl;
-  */
+void leftRotate(Node* x, Node* &root) { //& root or whatever
+  //for a left rotation y is the right child of x
+  Node* y = x->getRight();
 
-  //stop loops
-  x->setLeft(NULL);
-  
-  //was get left
-  if(y->getRight() != NULL) {
-    //basicly we overwrite y.getright later so this is so no info is lost
-    //prob needs to be left like the stop loops one
-    cout << "0" << endl;
-    x->setRight(y->getLeft());
-    cout << ":" << x->getRight()->getNumber() << endl;
-    y->getLeft()->setParent(x);
+  //1st thing
+  //make x point to the left subtree of y
+  x->setRight(y->getLeft());
+  if(x->getRight() != NULL) {
+    x->getRight()->setParent(x);
   }
-  cout << "1" << endl;
-  if (x->getParent() == NULL) {
-    //y becomes root of the tree
-    cout << "help this was not tested" << endl;
-    root = y;
-    y->setParent(NULL);
-    y->setColor(0);
-    
-    cout << y << endl;
-    //print(y, 0);
-  }
-  //cout << "2" << endl;
-  //added else so no seg fault
-  else if(x->getParent()->getLeft() == x) {
-    cout << "2.1" << endl;
-    y->setParent(x->getParent());
-    x->getParent()->setLeft(y);
+  //2nd thing
+  //make x.parent point to y instead
+  if (x->getParent() != NULL) {
+    //y replaces x in tree
+    if (x->getParent()->getRight() == x) {
+      x->getParent()->setRight(y);
+    }
+    else {
+      x->getParent()->setLeft(y);
+    }
+    //double linked
+    y->setParent(x);
   }
   else {
-    cout << "2.2" << endl;
-    y->setParent(x->getParent());
-    x->getParent()->setRight(y);
+    //x is root so make y root
+    root = y;
   }
-  cout << "3" << endl;
-  //was set left
-  print(root, 0);
-  cout << y << endl;
-  cout << "info: " << y->getNumber() << endl;
-  cout << y->getLeft()->getNumber() << endl;
-  //cout << y->getRight()->getNumber() << endl;
-
-  //was left
-  y->setRight(x);
-
-  cout << x->getRight() << endl;
-  cout << x->getLeft() << endl;
-  cout << y << endl;
-  
-  
-  //print(root, 0);
+  //3rd thing
+  //make y.left point to x
+  y->setLeft(x);
   x->setParent(y);
 }
 
-void rightRotate(Node* x, Node* y, Node* &root) {
+void rightRotate(Node* x, Node* &root) {
+  //for a right rotation y is the left  child of x
+  Node* y = x->getLeft();
 
+  //1st thing
+  //make x point to the right subtree of y
+  x->setLeft(y->getRight());
+  if(x->getLeft() != NULL) {
+    x->getLeft()->setParent(x);
+  }
+  //2nd thing
+  //make x.parent point to y instead
+  if (x->getParent() != NULL) {
+    //y replaces x in tree
+    if (x->getParent()->getRight() == x) {
+      x->getParent()->setRight(y);
+    }
+    else {
+      x->getParent()->setLeft(y);
+    }
+    //double linked
+    y->setParent(x);
+  }
+  else {
+    //x is root so make y root
+    root = y;
+  }
+  //3rd thing
+  //make y.left point to x
+  y->setRight(x);
+  x->setParent(y);
 }
