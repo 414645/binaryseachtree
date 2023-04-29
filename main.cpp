@@ -477,8 +477,8 @@ void insertRebalance(Node* newNode, Node* &root) {
 	  else if (k == k->getParent()->getLeft()) { //case 3.31 and 3.32
 	    k = k->getParent();
 	    //left rotate
-	    cout << "right rotate" << endl;
-	    leftRotate(k, root);
+	    cout << "!left rotate" << endl;
+	    rightRotate(k, root);
 	    cout << "done" << endl;
 	  }
 	}
@@ -487,8 +487,8 @@ void insertRebalance(Node* newNode, Node* &root) {
 	k->getParent()->setColor(0); //black
 	k->getParent()->getParent()->setColor(1); //gp -> red
 	//right rotate
-	cout << "left rotate" << endl;
-	rightRotate(k->getParent()->getParent(), root); //gp
+	cout << "!right rotate" << endl;
+	leftRotate(k->getParent()->getParent(), root); //gp
 	cout << "done" << endl;
       }
       else {
@@ -518,7 +518,7 @@ void deleteRebalance(Node* newNode, Node* &root) {
 void leftRotate(Node* x, Node* &root) { //& root or whatever
   //for a left rotation y is the right child of x
   Node* y = x->getRight();
-
+   
   //1st thing
   //make x point to the left subtree of y
   x->setRight(y->getLeft());
