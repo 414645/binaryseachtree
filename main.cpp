@@ -443,98 +443,59 @@ bool search(Node* current, int thing) {
   }
 }
 
+//uncle can be null (i think atleast)
 void insertRebalance(Node* newNode, Node* &root) {
   cout << "insertRebalence" << endl;
   Node* k = newNode;
-  //case 1
-  if (k->getParent() == NULL) {
-    k->setColor(0);
-  }
-  //case 2
-  if (k->getParent()->getColor() == 0) {
-    //do nothing
-  }
-  //case 3
-  if (k->getParent()->getColor() == 1) {
-    Node* gp = k->getParent()->getParent();
-    //set up for case 3.2 for a null uncle
-    bool nullUncle = false;
-    cout << "loc 1" << endl;
-    if (gp->getRight() == NULL || gp->getLeft() == NULL) {
-      cout << "working" << endl;
-      nullUncle = true;
-      
-    }
-    else if (gp->getRight()->getColor() == 0 ||
-	     gp->getLeft()->getColor() == 0) {
-      nullUncle = true;
-    }
-    //case 3.2
-    cout << "loc 2" << endl;
-    //nullUncle = true;
-    cout << "loc" << endl;
-    if (nullUncle == true) {
-      //3.2.1
-      
-      cout << "hi?" << endl;
-      if ( k->getParent() == gp->getRight() ) {
-	cout << "true" << endl;
-      }
-      //cout << k->getNumber() << endl;
-      //cout << k->getParent()->getNumber() << endl;
-      //cout << gp->getRight()->getNumber() << endl;
-
+  //while loop since you cant breack rule if your parent is black
+  //also double checks things as k changes
+  while (k->getParent()->getColor() != 1) { //red
+    if (k->getParent()->getParent() != NULL) {
+      if (k->getParent() == k->getParent()->getParent()->getRight()) {
+	cout << "f" << endl;
+	//save 'uncle' node
+	//with anti seg fault measures
+	Node* u = NULL;
+	if (k->getParent() != NULL) {
+	  if (k->getParent()->getParent() != NULL) {
+	    u = k->getParent()->getParent()->getLeft();
+	  }
+	}
 	
-      cout << "nullUncle" << endl;
-      if (k->getParent() == gp->getRight() &&  //p is rightchild of gp
-	  k->getParent()->getRight() == k) { //k is rightchild of p
-
-	cout << "left rotation" << endl;
-	print(root, 0);
-	//leftRotate(gp, gp->getRight(), root);
-      }
-      //3.2.2
-      else if (k->getParent() == gp->getRight() &&  //p is rightchild of gp
-	       k->getParent()->getLeft() == k) { //k is leftchild of p
+	cout << "1 fihs"<< endl;
+	//seg fault layer
+	if(u != NULL) {
+	  if (u->getColor() == 1) { //red, case 3.1
+	    u->setColor(0); //black
+	    k->getParent()->getParent()->setColor(0); //gp -> black
+	    k = k->getParent()->getParent(); //change k
+	  }
+	  else if (k == k->getParent()->getLeft()) { //case 3.31 and 3.32
+	    k = k->getParent();
+	    //left rotate
+	    cout << "right rotate" << endl;
+	    leftRotate(k, root);
+	  }
+	}
 	
-	cout << "right rotation" << endl;
-	//rightRotate(k->getParent(), k, root);
-	//do same thing as 3.2.1
-	insertRebalance(k, root);
+	cout << "hi" << endl;
+	k->getParent()->setColor(0); //black
+	k->getParent()->getParent()->setColor(1); //gp -> red
+	//right rotate
+	cout << "left rotate" << endl;
+	rightRotate(k->getParent()->getParent(), root); //gp
       }
-      //3.2.3
-      //3.2.4
-      //this is just a mess
-      cout << "no fautl" << endl;
-      if (k->getParent() == gp->getLeft() &&  //p is lchild of gp
-	  k->getParent()->getLeft() == k) { //k is ltchild of p
-
-	cout << "! right rotation" << endl;
-	print(root, 0);
-	//swapped gp>right to left
-	//leftRotate(gp, gp->getLeft(), root);
-      }
-      //3.2.2
-      else if (k->getParent() == gp->getLeft() &&  //p is leftchild of gp
-	       k->getParent()->getRight() == k) { //k is rchild of p
-	
-	cout << "! left rotation" << endl;
-	//rightRotate(k->getParent(), k, root);
-	//do same thing as 3.2.1
-	insertRebalance(k, root);
+      else {
+	//do same things with left and right swapped
+	cout << "unfinihsed" << endl;
       }
     }
-    //case 3.1
-    else if (gp->getRight()->getColor() == 1 &&
-	     gp->getLeft()->getColor() == 1) {
-      cout << "last thing" << endl;
-      gp->setColor(1);
-      gp->getRight()->setColor(0);
-      gp->getLeft()->setColor(0);
+    else {
+      //???
     }
-  }
+  } //end of while
+  root->setColor(0); //root is allways black
 }
-
 void deleteRebalance(Node* newNode, Node* &root) {
 
 }
