@@ -444,6 +444,8 @@ bool search(Node* current, int thing) {
 }
 
 //uncle can be null (i think atleast)
+//also most of the anit seg fault is reduntant but at this point I keep readding
+//impssible seg fault situations so it is in for next time
 void insertRebalance(Node* newNode, Node* &root) {
   cout << "insertRebalence" << endl;
   Node* k = newNode;
@@ -476,7 +478,7 @@ void insertRebalance(Node* newNode, Node* &root) {
 	  }
 	  else if (k == k->getParent()->getLeft()) { //case 3.31 and 3.32
 	    k = k->getParent();
-	    //left rotate
+	    //!left rotate
 	    cout << "!left rotate" << endl;
 	    rightRotate(k, root);
 	    cout << "done" << endl;
@@ -486,15 +488,47 @@ void insertRebalance(Node* newNode, Node* &root) {
 	cout << "hi" << endl;
 	k->getParent()->setColor(0); //black
 	k->getParent()->getParent()->setColor(1); //gp -> red
-	//right rotate
+	//!right rotate
 	cout << "!right rotate" << endl;
 	leftRotate(k->getParent()->getParent(), root); //gp
 	cout << "done" << endl;
       }
       else {
 	//do same things with left and right swapped
-	cout << "unfinihsed" << endl;
+	//cout << "unfinihsed" << endl;
+	if (k->getParent() == k->getParent()->getParent()->getLeft()) {
+	  //save 'uncle' node
+	  Node* u = NULL;
+	  if (k->getParent() != NULL) {
+	    if (k->getParent()->getParent() != NULL) {
+	      u = k->getParent()->getParent()->getRight();
+	    }
+	  }
+	  //seg fault layer
+	  if(u != NULL) {
+	    if (u->getColor() == 1) { //red, case 3.1
+	      u->setColor(0); //black
+	      k->getParent()->getParent()->setColor(0); //gp -> black
+	      k = k->getParent()->getParent(); //change k
+	    }
+	    else if (k == k->getParent()->getRight()) { //case 3.31 and 3.32
+	      k = k->getParent();
+	      //left rotate
+	      cout << "left rotate" << endl;
+	      leftRotate(k, root);
+	      cout << "done" << endl;
+	    }
+	  }
+	  
+	  k->getParent()->setColor(0); //black
+	  k->getParent()->getParent()->setColor(1); //gp -> red
+	  //right rotate
+	  cout << "right rotate" << endl;
+	  rightRotate(k->getParent()->getParent(), root); //gp
+	  cout << "done" << endl;
+	}
       }
+      //print(root, 0);
     }
     else {
       //???
