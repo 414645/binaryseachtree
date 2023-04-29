@@ -449,9 +449,13 @@ void insertRebalance(Node* newNode, Node* &root) {
   Node* k = newNode;
   //while loop since you cant breack rule if your parent is black
   //also double checks things as k changes
-  while (k->getParent()->getColor() != 1) { //red
+
+  //print(root, 0);
+  //cout << k->getParent()->getColor() << endl;
+  while (k->getParent()->getColor() == 1) { //red
     if (k->getParent()->getParent() != NULL) {
       if (k->getParent() == k->getParent()->getParent()->getRight()) {
+
 	cout << "f" << endl;
 	//save 'uncle' node
 	//with anti seg fault measures
@@ -475,6 +479,7 @@ void insertRebalance(Node* newNode, Node* &root) {
 	    //left rotate
 	    cout << "right rotate" << endl;
 	    leftRotate(k, root);
+	    cout << "done" << endl;
 	  }
 	}
 	
@@ -484,6 +489,7 @@ void insertRebalance(Node* newNode, Node* &root) {
 	//right rotate
 	cout << "left rotate" << endl;
 	rightRotate(k->getParent()->getParent(), root); //gp
+	cout << "done" << endl;
       }
       else {
 	//do same things with left and right swapped
@@ -492,6 +498,14 @@ void insertRebalance(Node* newNode, Node* &root) {
     }
     else {
       //???
+      //me having fun:
+      cout << "what did you do?" << endl;
+      cout << "..." <<  endl;
+      cout << endl;
+      cout << "you should always be able to go to parent" << endl;
+      cout << "and going up twice should not hit root of tree" << endl;
+      cout << "really what did you manage to break" << endl;      
+      exit(1);
     }
   } //end of while
   root->setColor(0); //root is allways black
