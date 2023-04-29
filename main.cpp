@@ -452,13 +452,14 @@ void insertRebalance(Node* newNode, Node* &root) {
   //while loop since you cant breack rule if your parent is black
   //also double checks things as k changes
 
-  //print(root, 0);
-  //cout << k->getParent()->getColor() << endl;
+  print(root, 0);
+  cout << k->getParent()->getColor() << endl;
+
   while (k->getParent()->getColor() == 1) { //red
     if (k->getParent()->getParent() != NULL) {
       if (k->getParent() == k->getParent()->getParent()->getRight()) {
 
-	cout << "f" << endl;
+	//cout << "f" << endl;
 	//save 'uncle' node
 	//with anti seg fault measures
 	Node* u = NULL;
@@ -467,14 +468,18 @@ void insertRebalance(Node* newNode, Node* &root) {
 	    u = k->getParent()->getParent()->getLeft();
 	  }
 	}
-	
-	cout << "1 fihs"<< endl;
+	//cout << "hello" << endl;
+
 	//seg fault layer
 	if(u != NULL) {
+	  cout << "uncle: "<< u->getNumber() << endl;
 	  if (u->getColor() == 1) { //red, case 3.1
+	    cout << "this is happening" << endl;
 	    u->setColor(0); //black
-	    k->getParent()->getParent()->setColor(0); //gp -> black
+	    k->getParent()->setColor(0);
+	    k->getParent()->getParent()->setColor(1); //gp -> red
 	    k = k->getParent()->getParent(); //change k
+	    //print(root, 0);
 	  }
 	  else if (k == k->getParent()->getLeft()) { //case 3.31 and 3.32
 	    k = k->getParent();
@@ -485,16 +490,21 @@ void insertRebalance(Node* newNode, Node* &root) {
 	  }
 	}
 	
-	cout << "hi" << endl;
+	//cout << "hi" << endl;
+	//print(root, 0);
+
+	//tree can be balcenced earlier so need to check
+	if (k->getParent()->getColor() == 1) {
 	k->getParent()->setColor(0); //black
 	k->getParent()->getParent()->setColor(1); //gp -> red
 	//!right rotate
 	cout << "!right rotate" << endl;
 	leftRotate(k->getParent()->getParent(), root); //gp
 	cout << "done" << endl;
+	}
       }
       else {
-	//do same things with left and right swapped
+	//do same things with left and right swapped 3.3.3 and 3.3.4
 	//cout << "unfinihsed" << endl;
 	if (k->getParent() == k->getParent()->getParent()->getLeft()) {
 	  //save 'uncle' node
@@ -508,7 +518,8 @@ void insertRebalance(Node* newNode, Node* &root) {
 	  if(u != NULL) {
 	    if (u->getColor() == 1) { //red, case 3.1
 	      u->setColor(0); //black
-	      k->getParent()->getParent()->setColor(0); //gp -> black
+	      k->getParent()->setColor(0);
+	      k->getParent()->getParent()->setColor(1); //gp -> red
 	      k = k->getParent()->getParent(); //change k
 	    }
 	    else if (k == k->getParent()->getRight()) { //case 3.31 and 3.32
@@ -519,16 +530,18 @@ void insertRebalance(Node* newNode, Node* &root) {
 	      cout << "done" << endl;
 	    }
 	  }
-	  
-	  k->getParent()->setColor(0); //black
-	  k->getParent()->getParent()->setColor(1); //gp -> red
-	  //right rotate
-	  cout << "right rotate" << endl;
-	  rightRotate(k->getParent()->getParent(), root); //gp
-	  cout << "done" << endl;
+
+	  //check we did not balence it aready
+	  if (k->getParent()->getColor() == 1) {
+	    k->getParent()->setColor(0); //black
+	    k->getParent()->getParent()->setColor(1); //gp -> red
+	    //right rotate
+	    cout << "right rotate" << endl;
+	    rightRotate(k->getParent()->getParent(), root); //gp
+	    cout << "done" << endl;
+	  }
 	}
       }
-      //print(root, 0);
     }
     else {
       //???
