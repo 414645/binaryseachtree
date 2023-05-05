@@ -454,8 +454,12 @@ void insertRebalance(Node* newNode, Node* &root) {
 
   print(root, 0);
   cout << k->getParent()->getColor() << endl;
-
-  while (k->getParent()->getColor() == 1) { //red
+  bool loop = false;
+  if (k->getParent()->getColor() == 1) {
+    loop = true;
+  }
+  
+  while (loop == true) { //red (or has case where quits if it is root)
     if (k->getParent()->getParent() != NULL) {
 
       /*
@@ -485,7 +489,7 @@ void insertRebalance(Node* newNode, Node* &root) {
 	  }
 	}
 	//cout << "hello" << endl;
-	bool check = false;
+	//bool check = false;
 	//seg fault layer
 	//if(u != NULL) {
 	//cout << "uncle: "<< u->getNumber() << endl;
@@ -494,9 +498,11 @@ void insertRebalance(Node* newNode, Node* &root) {
 	if (u != NULL) { 
 	  if (u->getColor() == 1) {
 	    tempcolor = 1;
+	    cout << "tempcolor" << endl;
 	  }
 	}
-	  
+	cout << "made it to if" << endl;
+	
 	if (tempcolor  == 1) { //red, case 3.1
 	  cout << "this is happening" << endl;
 	  u->setColor(0); //black
@@ -504,8 +510,8 @@ void insertRebalance(Node* newNode, Node* &root) {
 	  k->getParent()->getParent()->setColor(1); //gp -> red
 	  k = k->getParent()->getParent(); //change k
 	  //print(root, 0);
-	    check = true;
-	    print(root, 0);
+	  //check = true;
+	  print(root, 0);
 	    
 	}
 	
@@ -534,7 +540,8 @@ void insertRebalance(Node* newNode, Node* &root) {
 	
 	//tree can be balcenced earlier so need to check
 	else {
-	  //if (check == false) {
+	  cout << "else" << endl;
+	  //if (check == false) { //parent is not red
 	  k->getParent()->setColor(0); //black
 	  k->getParent()->getParent()->setColor(1); //gp -> red
 	  //!right rotate
@@ -544,10 +551,11 @@ void insertRebalance(Node* newNode, Node* &root) {
 	  print(root,0);
 	  cout << "done" << endl;
 	}
+	cout << "lp" << endl;
       }
       else {
 	//do same things with left and right swapped 3.3.3 and 3.3.4
-	//cout << "unfinihsed" << endl;
+	cout << "mirror" << endl;
 	if (k->getParent() == k->getParent()->getParent()->getLeft()) {
 	  //save 'uncle' node
 	  Node* u = NULL;
@@ -556,26 +564,33 @@ void insertRebalance(Node* newNode, Node* &root) {
 	      u = k->getParent()->getParent()->getRight();
 	    }
 	  }
+	  int tempcolor = 0;
 	  //seg fault layer
 	  if(u != NULL) {
-	    if (u->getColor() == 1) { //red, case 3.1
-	      u->setColor(0); //black
-	      k->getParent()->setColor(0);
-	      k->getParent()->getParent()->setColor(1); //gp -> red
-	      k = k->getParent()->getParent(); //change k
-	    }
-	    else if (k == k->getParent()->getRight()) { //case 3.31 and 3.32
-	      k = k->getParent();
-	      //left rotate
-	      cout << "left rotate" << endl;
-	      //leftRotate(k, root);
-	      print(root,0);
-	      cout << "done" << endl;
+	    if (u->getColor() == 1) {
+	      tempcolor = 1;
+	      cout << tempcolor << endl;
 	    }
 	  }
 
+	  if (tempcolor  == 1) { //red, case 3.1
+	    cout << "push blackness down" << endl;
+	    u->setColor(0); //black
+	    k->getParent()->setColor(0);
+	    k->getParent()->getParent()->setColor(1); //gp -> red
+	    k = k->getParent()->getParent(); //change k
+	  }
+	  else if (k == k->getParent()->getRight()) { //case 3.31 and 3.32
+	    k = k->getParent();
+	    //left rotate
+	    cout << "left rotate" << endl;
+	    //leftRotate(k, root);
+	    print(root,0);
+	    cout << "done" << endl;
+	    }
+
 	  //check we did not balence it aready
-	  if (k->getParent()->getColor() == 1) {
+	  else {
 	    k->getParent()->setColor(0); //black
 	    k->getParent()->getParent()->setColor(1); //gp -> red
 	    //right rotate
@@ -599,6 +614,21 @@ void insertRebalance(Node* newNode, Node* &root) {
       cout << "really what did you manage to break" << endl;      
       exit(1);
     }
+
+
+
+
+    //a case exsts where k can be root so k.getparent.getcolor is seg fault
+    //soo this exists and is a boolean it checs so that update can be in 2 ifs
+    //cout << k->getNumber() << endl;
+    if (k->getParent() == NULL) {
+      loop = false;
+    }
+    else if(k->getParent()->getColor() != 1) {
+      loop = false;
+    }
+
+    
   } //end of while
   root->setColor(0); //root is allways black
 }
