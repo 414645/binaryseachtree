@@ -457,6 +457,22 @@ void insertRebalance(Node* newNode, Node* &root) {
 
   while (k->getParent()->getColor() == 1) { //red
     if (k->getParent()->getParent() != NULL) {
+
+      /*
+      Node* gp = k->getParent()->getParent();
+      if (gp != NULL) {
+	cout << "gp: " << gp->getNumber() << endl;
+      } 
+      if (gp->getRight() != NULL) {
+	cout << "r: " << gp->getRight()->getNumber() << endl;
+      }
+      
+      if (gp->getLeft() != NULL) {
+	cout << "l: " << gp->getLeft()->getNumber() << endl;
+      }
+      //*/
+
+      
       if (k->getParent() == k->getParent()->getParent()->getRight()) {
 
 	//cout << "f" << endl;
@@ -469,10 +485,12 @@ void insertRebalance(Node* newNode, Node* &root) {
 	  }
 	}
 	//cout << "hello" << endl;
-
+	bool check = false;
 	//seg fault layer
 	if(u != NULL) {
 	  cout << "uncle: "<< u->getNumber() << endl;
+	  //print(root, 0);
+	  
 	  if (u->getColor() == 1) { //red, case 3.1
 	    cout << "this is happening" << endl;
 	    u->setColor(0); //black
@@ -480,26 +498,43 @@ void insertRebalance(Node* newNode, Node* &root) {
 	    k->getParent()->getParent()->setColor(1); //gp -> red
 	    k = k->getParent()->getParent(); //change k
 	    //print(root, 0);
+	    check = true;
+	    print(root, 0);
+	    
 	  }
-	  else if (k == k->getParent()->getLeft()) { //case 3.31 and 3.32
+
+	}
+	cout << check << endl;
+	//dont do if check??
+	
+        if (k == k->getParent()->getLeft()) { //case 3.31 and 3.32
+	    cout << "we are doing the else if" << endl;
+	    
 	    k = k->getParent();
 	    //!left rotate
 	    cout << "!left rotate" << endl;
 	    rightRotate(k, root);
+	    print(root,0);
 	    cout << "done" << endl;
+	    //check = true;
 	  }
-	}
+	
 	
 	//cout << "hi" << endl;
 	//print(root, 0);
 
+	cout <<k->getParent()->getRight() << "!!!" << endl;
+	cout << k->getParent()->getNumber();
+	
 	//tree can be balcenced earlier so need to check
-	if (k->getParent()->getColor() == 1) {
+	if (check == false) {
 	k->getParent()->setColor(0); //black
 	k->getParent()->getParent()->setColor(1); //gp -> red
 	//!right rotate
 	cout << "!right rotate" << endl;
+	cout <<"rotating: "<< k->getParent()->getParent()->getNumber() << endl;;
 	leftRotate(k->getParent()->getParent(), root); //gp
+	print(root,0);
 	cout << "done" << endl;
 	}
       }
@@ -526,7 +561,8 @@ void insertRebalance(Node* newNode, Node* &root) {
 	      k = k->getParent();
 	      //left rotate
 	      cout << "left rotate" << endl;
-	      leftRotate(k, root);
+	      //leftRotate(k, root);
+	      print(root,0);
 	      cout << "done" << endl;
 	    }
 	  }
@@ -536,8 +572,10 @@ void insertRebalance(Node* newNode, Node* &root) {
 	    k->getParent()->setColor(0); //black
 	    k->getParent()->getParent()->setColor(1); //gp -> red
 	    //right rotate
+	    //print(root,0);
 	    cout << "right rotate" << endl;
 	    rightRotate(k->getParent()->getParent(), root); //gp
+	    //print(root,0);
 	    cout << "done" << endl;
 	  }
 	}
@@ -583,7 +621,8 @@ void leftRotate(Node* x, Node* &root) { //& root or whatever
       x->getParent()->setLeft(y);
     }
     //double linked
-    y->setParent(x);
+    //I think it is x.parent not x
+    y->setParent(x->getParent());
   }
   else {
     //x is root so make y root
@@ -616,7 +655,9 @@ void rightRotate(Node* x, Node* &root) {
       x->getParent()->setLeft(y);
     }
     //double linked
-    y->setParent(x);
+    y->setParent(x->getParent());
+    //cout << y->getNumber() << ", " << y->getParent()->getNumber() << " endl" << endl;
+    //cout << x->getNumber() << ", " << x->getParent()->getNumber() << " endl" << endl;
   }
   else {
     //x is root so make y root
