@@ -37,7 +37,11 @@ bool search(Node* current, int thing);
 
 //maintian red-black tree properties after problems
 void insertRebalance(Node* newNode, Node* &root);
-void deleteRebalance(Node* newNode, Node* &root);
+void deleteRebalance(Node* k, Node* &root);
+
+//I wanted something to call when a node was deleted from the tree to make
+//what is happpening easier to understand
+void deleteAlert(Node* wasDeleted, Node* &root);
 
 //manipulating tree
 void leftRotate(Node* x, Node* &root);
@@ -301,6 +305,8 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
       //just delete this one
       root = NULL;
       delete current;
+
+      //no rebalancing needed deleted the root of the tree
     }
 
     //if there is one node
@@ -310,6 +316,9 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
       //root->parent is always null
       root->setParent(NULL);
       delete current;
+
+      //the new root of the tree is black
+      root->setColor(0);
     }
     //if there is one node (otherside)
     else if(current->getLeft() != NULL  && current->getRight() == NULL) {
@@ -317,6 +326,10 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
       //root->parent is always null
       root->setParent(NULL);
       delete current;
+
+      //the new root of the tree is black
+      root->setColor(0);
+
     }
     
     else if(current->getLeft() != NULL  && current->getRight() != NULL) {
@@ -329,6 +342,14 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
 	temp = temp->getLeft();
       }
       int replace = temp->getNumber();
+
+      //don't swap colors  Do NOT
+      /*
+      int newColor = temp->getColor();
+      temp->setColor(current->getColor());
+      current->setColor(newColor);
+      //*/
+
       //call delete on the last one
       remove(root, root, NULL, replace);
       
@@ -353,6 +374,10 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
 	//left
 	previous->setLeft(NULL);
       }
+      
+      //something was deleted call the alert
+      deleteAlert(current, root);
+
       delete current;
     }
 
@@ -372,6 +397,9 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
 	//update parent
 	current->getRight()->setParent(previous);
       }
+
+      //something was deleted call the alert
+      deleteAlert(current, root);
     }
     //if there is one node (otherside)
     else if(current->getLeft() != NULL  && current->getRight() == NULL) {
@@ -387,6 +415,9 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
 	//update parent
 	current->getLeft()->setParent(previous);
       }
+
+      //something was deleted call the alert
+      deleteAlert(current, root);
     }
 
     else if(current->getLeft() != NULL  && current->getRight() != NULL) {
@@ -399,6 +430,14 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
 	temp = temp->getLeft();
       }
       int replace = temp->getNumber();
+
+      //swap colors exept I don;t think you do
+      /*
+      int newColor = temp->getColor();
+      temp->setColor(current->getColor());
+      current->setColor(newColor);
+      //*/
+
       remove(current, current, NULL, replace);
       //cout << "done" << endl;
       current->setNumber(replace);
@@ -632,7 +671,12 @@ void insertRebalance(Node* newNode, Node* &root) {
   } //end of while
   root->setColor(0); //root is allways black
 }
-void deleteRebalance(Node* newNode, Node* &root) {
+
+void deleteAlert(Node* wasDeleted, Node* &root) {
+  cout << wasDeleted->getNumber() << " was delted" << endl;
+}
+
+void deleteRebalance(Node* k, Node* &root) {
 
 }
 
@@ -664,6 +708,7 @@ void leftRotate(Node* x, Node* &root) { //& root or whatever
   else {
     //x is root so make y root
     root = y;
+    y->setParent(NULL);
   }
   //3rd thing
   //make y.left point to x
@@ -699,6 +744,7 @@ void rightRotate(Node* x, Node* &root) {
   else {
     //x is root so make y root
     root = y;
+    y->setParent(NULL);
   }
   //3rd thing
   //make y.left point to x
