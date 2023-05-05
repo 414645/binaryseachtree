@@ -41,7 +41,7 @@ void deleteRebalance(Node* k, Node* &root);
 
 //I wanted something to call when a node was deleted from the tree to make
 //what is happpening easier to understand
-void deleteAlert(Node* wasDeleted, Node* &root);
+void deleteAlert(Node* wasDeleted, Node* successor, Node* parent, Node* &root);
 
 //manipulating tree
 void leftRotate(Node* x, Node* &root);
@@ -362,7 +362,8 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
   }
   else if (current->getNumber() == thing) {
     //remove current thing somehow
-
+    cout << "target: " << thing << ", current: " << current->getNumber() << endl;
+    
     //if this is the end (leaf)
     if(current->getRight() == NULL && current->getLeft() == NULL) {
       //just delete this one
@@ -374,9 +375,10 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
 	//left
 	previous->setLeft(NULL);
       }
-      
+
+      //print(root, 0);
       //something was deleted call the alert
-      deleteAlert(current, root);
+      deleteAlert(current, NULL, previous, root);
 
       delete current;
     }
@@ -385,39 +387,49 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
     //we move the that one up
     //it will work because of how they were added
     else if(current->getRight() != NULL && current->getLeft() == NULL) {
+      Node* successor = NULL;
       if (previous->getNumber() > thing) {
 	//right
 	previous->setRight(current->getRight());
 	//update parent
 	current->getRight()->setParent(previous);
+
+	 successor = current->getRight();
       }
       else {
 	//left
 	previous->setLeft(current->getRight());
 	//update parent
 	current->getRight()->setParent(previous);
+
+        successor = current->getRight();
       }
 
       //something was deleted call the alert
-      deleteAlert(current, root);
+      deleteAlert(current, successor, successor->getParent(), root);
     }
     //if there is one node (otherside)
     else if(current->getLeft() != NULL  && current->getRight() == NULL) {
+      Node* successor = NULL;
       if (previous->getNumber() > thing) {
 	//right
 	previous->setRight(current->getLeft());
 	//update parent
 	current->getLeft()->setParent(previous);
+
+        successor = current->getLeft();
       }
       else {
 	//left
 	previous->setLeft(current->getLeft());
 	//update parent
 	current->getLeft()->setParent(previous);
+
+        successor = current->getLeft();
       }
 
       //something was deleted call the alert
-      deleteAlert(current, root);
+      deleteAlert(current, successor, successor->getParent(), root);
     }
 
     else if(current->getLeft() != NULL  && current->getRight() != NULL) {
@@ -672,12 +684,40 @@ void insertRebalance(Node* newNode, Node* &root) {
   root->setColor(0); //root is allways black
 }
 
-void deleteAlert(Node* wasDeleted, Node* &root) {
-  cout << wasDeleted->getNumber() << " was delted" << endl;
+void deleteAlert(Node* wasDeleted, Node* successor, Node* parent, Node* &root) {
+  //wasDeleted->getNumber is very likely inacurate at this point in time
+  //does not matter though as only goal is to rebalance tree
+  //cout << wasDeleted->getNumber() << " was delted" << endl;
+  int succColor = 0;
+  if (successor != NULL) {
+    if(successor->getColor() != 0) {
+      succColor = 1;
+    }
+  }
+  //if wasDeleted or successor is red make them black
+  if (succColor == 1 || wasDeleted->getColor() == 1) {
+    if (successor != NULL) {
+      successor->setColor (0);
+    }
+  }
+  else {
+    //it or its next one was not red
+    //fix it
+    if (successor == NULL) {
+      Node* temporary = new Node(-1);
+      temporary->setParent(NULL);
+      print(root, 0);
+      deleteRebalance(temporary, root);
+      delete temporary;
+    }
+    else {
+      deleteRebalance(successor, root);
+    }
+  }
 }
 
 void deleteRebalance(Node* k, Node* &root) {
-
+  print (k, 0);
 }
 
 //manipulating tree
