@@ -685,6 +685,13 @@ void insertRebalance(Node* newNode, Node* &root) {
 }
 
 void deleteAlert(Node* wasDeleted, Node* successor, Node* parent, Node* &root) {
+  //for updated version call this just before deleting a node, wait
+  //just search for node in this "rebalnace" so the delete is now ok
+  //then call delete?
+}
+
+/*
+void deleteAlert(Node* wasDeleted, Node* successor, Node* parent, Node* &root) {
   //wasDeleted->getNumber is very likely inacurate at this point in time
   //does not matter though as only goal is to rebalance tree
   //cout << wasDeleted->getNumber() << " was delted" << endl;
@@ -715,6 +722,7 @@ void deleteAlert(Node* wasDeleted, Node* successor, Node* parent, Node* &root) {
     }
   }
 }
+*/
 
 void deleteRebalance(Node* k, Node* &root) {
   print (k, 0);
