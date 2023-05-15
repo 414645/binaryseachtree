@@ -369,7 +369,7 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
       //just delete this one
 
       //the new plan is to call alert before deleting so do that
-      //deleteAlert(current, NULL, previous, root);
+      deleteAlert(current, root);
       //sucessor is currently not bieng passed (its the NULL)
       //side note. we are not doing this. search will be in alert
       //first that will then call this later
@@ -397,6 +397,9 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
     
     
     else if(current->getRight() != NULL && current->getLeft() == NULL) {
+      //call alert first
+      deleteAlert(current, root);
+
       Node* successor = NULL;
       if (previous->getNumber() > thing) {
 	//right
@@ -420,6 +423,9 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
     }
     //if there is one node (otherside)
     else if(current->getLeft() != NULL  && current->getRight() == NULL) {
+      //call delete alert first
+      deleteAlert(current, root);
+
       Node* successor = NULL;
       if (previous->getNumber() > thing) {
 	//right
@@ -694,19 +700,14 @@ void insertRebalance(Node* newNode, Node* &root) {
   root->setColor(0); //root is allways black
 }
 
-void deleteAlert(int num, Node* toDelete, Node* &root) {
+void deleteAlert(Node* toDelete, Node* &root) {
   //for updated version call this just before deleting a node, wait
   //just search for node in this "rebalnace" so the delete is now ok
   //then call delete?
   cout << "ALERT" << endl;
+  cout << toDelete->getNumber() << endl;
   //exit(1);
-  if (toDelete == NULL) {
-    //find the node using the number
-    while (toDelete == NULL) {
-      cout << "unfinsihed" << endl;
-      exit(1);
-    }
-  }
+  
 
   //call delete rebalancing
 
