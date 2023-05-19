@@ -20,7 +20,11 @@ using namespace std;
 //tried to make rotates and insertRebalance simple
 //and put comments down there on how they work
 
-//40 30 20 50 45 Bug from insert is there because it quits while loop early
+//40 30 20 50 45 Bug from insert is fixed
+//it was breaking becasue of a commented out rotate
+// ...that had a non-commented cout above it saying rotate.
+//so yeah that happend
+
 //Otherwise as far as I can tell deletion works properly
 //for deletion it find the node and then before deleting it it reshifts tree
 //for balancing then continues deleting it
