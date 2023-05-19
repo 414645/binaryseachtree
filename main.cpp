@@ -731,6 +731,7 @@ void deleteRebalance(Node* x, Node* &root) {
     //do one side so it is just mirroring
     //might need to add checks for NULL, like even more somehow
     if (x == x->getParent()->getLeft()) {
+      cout << "if" << endl;
       //set sibling for future reference
       s = x->getParent()->getRight();
       //this can be null so yeah
@@ -751,7 +752,6 @@ void deleteRebalance(Node* x, Node* &root) {
 	//overwrite it or not???
 	s = x->getParent()->getRight();
       }
-      cout <<  "pass" << endl;
 
       bool pass = true;
       if (s != NULL) {
@@ -766,6 +766,13 @@ void deleteRebalance(Node* x, Node* &root) {
 	  }
 	}
       }
+      else {
+	//if s in null make pass false
+	pass = false;
+      }
+
+      cout << "pass: " << pass << endl;
+	    
       //Null nodes are black but will cause seg fault
       //if (s->getLeft()->getColor() == 0 && s->getRight()->getColor() == 0)
       if (pass == true) {
@@ -818,7 +825,6 @@ void deleteRebalance(Node* x, Node* &root) {
 	//overwrite it or not???
 	s = x->getParent()->getLeft();
       }
-      cout <<  "pass" << endl;
 
       bool pass = true;
       if (s != NULL) {
@@ -833,14 +839,32 @@ void deleteRebalance(Node* x, Node* &root) {
 	  }
 	}
       }
+      else {
+	//if s in null make pass false
+	pass = false;
+      }
+      
+      cout << "pass: " << pass << endl;
+
+      //I think I am missing a case where we deal with this since in visulizer
+      //it pushes blackness up a level en then see that right nephew is red
+      //with a black sibling
+
+      //on second thought that might be true but if x become x->parent
+      //so I am not sure it is looping properly
+      
       //Null nodes are black but will cause seg fault
       //if (s->getLeft()->getColor() == 0 && s->getRight()->getColor() == 0)
       if (pass == true) {
+	//cout << "hello??? " << endl;
+	//cout << s << endl;
+	//cout << s->getNumber() << endl;
 	//make s red and set x to parent
 	s->setColor(1);
 	x = x->getParent();
       }
       else {
+	//cout << "what?" << endl;
 	//one (or both) of s children is red
 	if(s->getLeft()->getColor() == 0) {
 	  s->getRight()->setColor(0);
