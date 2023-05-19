@@ -668,7 +668,7 @@ void insertRebalance(Node* newNode, Node* &root) {
 	    k = k->getParent();
 	    //left rotate
 	    cout << "left rotate" << endl;
-	    //leftRotate(k, root);
+	    leftRotate(k, root);
 	    print(root,0);
 	    cout << "done" << endl;
 	    }
