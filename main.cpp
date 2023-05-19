@@ -710,48 +710,58 @@ void deleteAlert(Node* toDelete, Node* &root) {
   
 
   //call delete rebalancing
-
-
-  //end by deleting the node
-  //remove(num);
+  if (toDelete != NULL) {
+    deleteRebalance(toDelete, root);
+  }
+    
+  //end by going back to delte which will delete the node
+  //(it might botch the delete) need to probably redo that
 }
-
-/*
-void deleteAlert(Node* wasDeleted, Node* successor, Node* parent, Node* &root) {
-  //wasDeleted->getNumber is very likely inacurate at this point in time
-  //does not matter though as only goal is to rebalance tree
-  //cout << wasDeleted->getNumber() << " was delted" << endl;
-  int succColor = 0;
-  if (successor != NULL) {
-    if(successor->getColor() != 0) {
-      succColor = 1;
-    }
-  }
-  //if wasDeleted or successor is red make them black
-  if (succColor == 1 || wasDeleted->getColor() == 1) {
-    if (successor != NULL) {
-      successor->setColor (0);
-    }
-  }
-  else {
-    //it or its next one was not red
-    //fix it
-    if (successor == NULL) {
-      Node* temporary = new Node(-1);
-      temporary->setParent(NULL);
-      print(root, 0);
-      deleteRebalance(temporary, root);
-      delete temporary;
-    }
-    else {
-      deleteRebalance(successor, root);
-    }
-  }
-}
-*/
 
 void deleteRebalance(Node* k, Node* &root) {
-  print (k, 0);
+  //print (k, 0);
+  if (k->getColor() == 1) {
+    //just delete it (handeled at end)
+  }
+  else if (k == root) {
+    //same thing
+  }
+  else {
+    //while it is not red or root
+    while (k->getColor() == 0 && k != root) {
+      cout << "while loop" << endl;
+      Node* sibling = NULL;
+      if (k->getParent()->getRight() != k){
+	sibling = k->getParent()->getRight();
+      }
+      else {
+	k->getParent()->getLeft();
+      }
+      bool blackS = true;
+      if (sibling != NULL) {
+	if (sibling->getColor() == 1) {
+	  blackS = false;
+	}
+      }
+
+      //code here
+      /*
+      //if sibling and siblings children are black (null counts)
+      if (sibling != NULL) {
+	if(sibling->getRight()
+      }
+      //*/
+
+      if (blackS = false) {
+	//swap k.color with sibling.color
+	//rotate parent in direction of k
+	//loop to start of while (if else'es)
+      }
+
+      //one of siblings children is red and other is black
+      //(different cases for each)
+    }
+  }
 }
 
 //manipulating tree
