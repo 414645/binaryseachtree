@@ -471,7 +471,6 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
       current->setColor(newColor);
       //*/
 
-
       //even if root = current there shoudl be no reason it can be
       //root, current , Null , replace (vs) c c, n ,r
       remove(root, current, NULL, replace);
