@@ -768,7 +768,7 @@ void deleteRebalance(Node* x, Node* &root) {
       }
       else {
 	//if s in null make pass false
-	pass = false;
+	//pass = false;
       }
 
       cout << "pass: " << pass << endl;
@@ -844,7 +844,7 @@ void deleteRebalance(Node* x, Node* &root) {
       }
       else {
 	//if s in null make pass false
-	pass = false;
+	//pass = false;
       }
       
       cout << "pass: " << pass << endl;
@@ -855,6 +855,8 @@ void deleteRebalance(Node* x, Node* &root) {
 
       //on second thought that might be true but if x become x->parent
       //so I am not sure it is looping properly
+      //might be becase x->starts at 1 (since 2 has two childen)
+      //and does not go up propperly?
       
       //Null nodes are black but will cause seg fault
       //if (s->getLeft()->getColor() == 0 && s->getRight()->getColor() == 0)
@@ -863,16 +865,14 @@ void deleteRebalance(Node* x, Node* &root) {
 	//cout << s << endl;
 	//cout << s->getNumber() << endl;
 	//make s red and set x to parent
-	print(root, 0);
+	//print(root, 0);
 	
 	s->setColor(1);
 
 	cout << "x " << x->getNumber() << endl;
-	
 	x = x->getParent();
-
 	cout << "x " << x->getNumber() << endl;
-	print(root, 0);
+	//print(root, 0);
       }
       else {
 	//cout << "what?" << endl;
@@ -893,9 +893,17 @@ void deleteRebalance(Node* x, Node* &root) {
 	x = root;
       }
 
-      
+      cout << x;
+      cout << "x: " << x->getNumber() << endl;
+      cout << "color " << x->getColor() << endl;
     }
   }
+  if (x != root && x->getColor() == 0) {
+    cout << "THIS IS BROKEN !?!" << endl;
+  }
+  cout << "x: " << x << " root: " << root << endl;
+  cout << "x.color = " << x->getColor() << endl;
+  cout << endl;
   
   cout << "x = " << x << endl;
   cout << "# = " << x->getNumber() << endl;
