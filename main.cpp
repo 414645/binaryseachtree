@@ -280,7 +280,7 @@ void add(Node* &root, Node* current, Node* previous, int thing) {
   }
 }
 void remove(Node* &root, Node* current, Node* previous, int thing) {
-  cout << "root: " << root << endl;
+  cout << "problem root: " << root->getNumber() << endl;
   
   if (previous != NULL) {
     //I just want to know if this was left or right node of previous
@@ -326,6 +326,7 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
     //if there is one node (otherside)
     else if(current->getLeft() != NULL  && current->getRight() == NULL) {
       root = current->getLeft();
+      cout << "root replaced" << endl;
       //root->parent is always null
       root->setParent(NULL);
       delete current;
@@ -493,7 +494,7 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
     remove(root, current->getLeft(), current, thing);
   }
 
-  cout << "root: " << root << endl;
+  cout << "problem root: " << root->getNumber() << endl;
 }
 bool search(Node* current, int thing) {
   //possibly retruns
