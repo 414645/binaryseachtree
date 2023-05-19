@@ -817,6 +817,9 @@ void deleteRebalance(Node* x, Node* &root) {
       //as long as s is not NULL
       //if sibling is red
       if(blackSibling == false) {
+
+	cout << "blacksibling = false" << endl;
+	
 	s->setColor(0);
 	x->getParent()->setColor(1);
 	//right not left this time
@@ -860,8 +863,16 @@ void deleteRebalance(Node* x, Node* &root) {
 	//cout << s << endl;
 	//cout << s->getNumber() << endl;
 	//make s red and set x to parent
+	print(root, 0);
+	
 	s->setColor(1);
+
+	cout << "x " << x->getNumber() << endl;
+	
 	x = x->getParent();
+
+	cout << "x " << x->getNumber() << endl;
+	print(root, 0);
       }
       else {
 	//cout << "what?" << endl;
