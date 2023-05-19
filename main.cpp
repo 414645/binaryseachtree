@@ -369,6 +369,7 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
       //just delete this one
 
       //the new plan is to call alert before deleting so do that
+      cout << "root: " << root->getNumber() << endl;
       deleteAlert(current, root);
       //sucessor is currently not bieng passed (its the NULL)
       //side note. we are not doing this. search will be in alert
@@ -398,6 +399,7 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
     
     else if(current->getRight() != NULL && current->getLeft() == NULL) {
       //call alert first
+      cout << "root: " << root->getNumber() << endl;
       deleteAlert(current, root);
 
       Node* successor = NULL;
@@ -419,11 +421,11 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
       }
 
       //something was deleted call the alert
-      //deleteAlert(current, successor, successor->getParent(), root);
     }
     //if there is one node (otherside)
     else if(current->getLeft() != NULL  && current->getRight() == NULL) {
       //call delete alert first
+      cout << "root: " << root->getNumber() << endl;
       deleteAlert(current, root);
 
       Node* successor = NULL;
@@ -445,7 +447,6 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
       }
 
       //something was deleted call the alert
-      //deleteAlert(current, successor, successor->getParent(), root);
     }
 
     else if(current->getLeft() != NULL  && current->getRight() != NULL) {
@@ -705,6 +706,7 @@ void deleteAlert(Node* toDelete, Node* &root) {
   //just search for node in this "rebalnace" so the delete is now ok
   //then call delete?
   cout << "ALERT" << endl;
+  cout << "root: " << root->getNumber() << endl;
   cout << toDelete->getNumber() << endl;
   //exit(1);
   
