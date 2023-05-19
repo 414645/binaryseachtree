@@ -20,6 +20,13 @@ using namespace std;
 //tried to make rotates and insertRebalance simple
 //and put comments down there on how they work
 
+//40 30 20 50 45 Bug from insert is there because it quits while loop early
+//Otherwise as far as I can tell deletion works properly
+//for deletion it find the node and then before deleting it it reshifts tree
+//for balancing then continues deleting it
+
+//There is also a search funcion
+
 void print(Node* current, int tab);
 //print out the tree in a way that lets you see children + parents + color
 void printTest(Node* current, int tab, bool color);
@@ -62,7 +69,7 @@ int main() {
     }
     if (strcmp(input, "HELP") == 0) {
       cout << "Commands are:" << endl;
-      cout << "PRINT" << endl;
+      cout << "PRINT   *PRINT1 and PRINT2 give different info" << endl;
       cout << "ADD" << endl;
       cout << "REMOVE" << endl;
       cout << "SEARCH" << endl;
