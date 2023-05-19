@@ -716,10 +716,160 @@ void deleteAlert(Node* toDelete, Node* &root) {
     
   //end by going back to delte which will delete the node
   //(it might botch the delete) need to probably redo that
+
+  cout << "DONE" << endl;
 }
 
-void deleteRebalance(Node* k, Node* &root) {
+void deleteRebalance(Node* x, Node* &root) {
+  //rewriting this so  it is better symetry
+
+  //sibling
+  Node* s = NULL;
+  cout << "rebalancing" << endl;
+
+  while (x != root && x->getColor() == 0) {
+    //do one side so it is just mirroring
+    //might need to add checks for NULL, like even more somehow
+    if (x == x->getParent()->getLeft()) {
+      //set sibling for future reference
+      s = x->getParent()->getRight();
+      //this can be null so yeah
+
+      bool blackSibling = true;
+      if (s != NULL) {
+	if (s->getColor() == 1) {
+	  blackSibling = false;
+	}
+      }
+
+      //as long as s is not NULL
+      if(blackSibling == false) {
+	s->setColor(0);
+	x->getParent()->setColor(1);
+	leftRotate(x->getParent(), root);
+
+	//overwrite it or not???
+	s = x->getParent()->getRight();
+      }
+      cout <<  "pass" << endl;
+
+      bool pass = true;
+      if (s != NULL) {
+	if(s->getLeft() != NULL) {
+	  if(s->getLeft()->getColor() == 1) {
+	    pass = false;
+	  }
+	}
+	if(s->getRight() != NULL) {
+	  if(s->getRight()->getColor() == 1) {
+	    pass = false;
+	  }
+	}
+      }
+      //Null nodes are black but will cause seg fault
+      //if (s->getLeft()->getColor() == 0 && s->getRight()->getColor() == 0)
+      if (pass == true) {
+	//make s red and set x to parent
+	s->setColor(1);
+	x = x->getParent();
+      }
+      else {
+	//one (or both) of s children is red
+	if(s->getRight()->getColor() == 0) {
+	  s->getLeft()->setColor(0);
+	  s->setColor(1);
+	  rightRotate(s, root);
+	  //agian on the override or not?
+	  s = x->getParent()->getRight();
+	}
+	s->setColor(x->getParent()->getColor());
+	x->getParent()->setColor(0);
+	s->getRight()->setColor(0);
+	leftRotate(x->getParent(), root);
+
+	//agian
+	x = root;
+      }
+    }
+    else {
+      //mirror
+      cout << "else" << endl;
+      //copy pase then flip
+
+      //set sibling for future reference
+      s = x->getParent()->getLeft();
+      //this can be null so yeah
+
+      bool blackSibling = true;
+      if (s != NULL) {
+	if (s->getColor() == 1) {
+	  blackSibling = false;
+	}
+      }
+
+      //as long as s is not NULL
+      //if sibling is red
+      if(blackSibling == false) {
+	s->setColor(0);
+	x->getParent()->setColor(1);
+	//right not left this time
+	rightRotate(x->getParent(), root);
+
+	//overwrite it or not???
+	s = x->getParent()->getLeft();
+      }
+      cout <<  "pass" << endl;
+
+      bool pass = true;
+      if (s != NULL) {
+	if(s->getLeft() != NULL) {
+	  if(s->getLeft()->getColor() == 1) {
+	    pass = false;
+	  }
+	}
+	if(s->getRight() != NULL) {
+	  if(s->getRight()->getColor() == 1) {
+	    pass = false;
+	  }
+	}
+      }
+      //Null nodes are black but will cause seg fault
+      //if (s->getLeft()->getColor() == 0 && s->getRight()->getColor() == 0)
+      if (pass == true) {
+	//make s red and set x to parent
+	s->setColor(1);
+	x = x->getParent();
+      }
+      else {
+	//one (or both) of s children is red
+	if(s->getLeft()->getColor() == 0) {
+	  s->getRight()->setColor(0);
+	  s->setColor(1);
+	  leftRotate(s, root);
+	  //agian on the override or not?
+	  s = x->getParent()->getLeft();
+	}
+	s->setColor(x->getParent()->getColor());
+	x->getParent()->setColor(0);
+	s->getLeft()->setColor(0);
+	rightRotate(x->getParent(), root);
+
+	//agian
+	x = root;
+      }
+
+      
+    }
+  }
+  
+  cout << "x = " << x << endl;
+  cout << "# = " << x->getNumber() << endl;
+  
   //print (k, 0);
+
+
+  /*
+  
   if (k->getColor() == 1) {
     //just delete it (handeled at end)
   }
@@ -730,6 +880,8 @@ void deleteRebalance(Node* k, Node* &root) {
     //while it is not red or root
     while (k->getColor() == 0 && k != root) {
       cout << "while loop" << endl;
+
+      //set sibling
       Node* sibling = NULL;
       if (k->getParent()->getRight() != k){
 	sibling = k->getParent()->getRight();
@@ -744,13 +896,15 @@ void deleteRebalance(Node* k, Node* &root) {
 	}
       }
 
-      //code here
+      
+
+      //now we need ot figure out what to do
       /*
       //if sibling and siblings children are black (null counts)
       if (sibling != NULL) {
 	if(sibling->getRight()
       }
-      //*/
+      ///
 
       if (blackS = false) {
 	//swap k.color with sibling.color
@@ -762,6 +916,7 @@ void deleteRebalance(Node* k, Node* &root) {
       //(different cases for each)
     }
   }
+  //*/
 }
 
 //manipulating tree
