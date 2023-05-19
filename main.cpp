@@ -280,6 +280,8 @@ void add(Node* &root, Node* current, Node* previous, int thing) {
   }
 }
 void remove(Node* &root, Node* current, Node* previous, int thing) {
+  cout << "root: " << root << endl;
+  
   if (previous != NULL) {
     //I just want to know if this was left or right node of previous
     //this is not very useful but...
@@ -312,6 +314,7 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
     //if there is one node
     //it becomes root
     else if(current->getRight() != NULL && current->getLeft() == NULL) {
+      cout << "root replaced" << endl;
       root = current->getRight();
       //root->parent is always null
       root->setParent(NULL);
@@ -489,7 +492,8 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
     //cout << "left" << endl;
     remove(root, current->getLeft(), current, thing);
   }
-  
+
+  cout << "root: " << root << endl;
 }
 bool search(Node* current, int thing) {
   //possibly retruns
@@ -515,6 +519,8 @@ bool search(Node* current, int thing) {
 //also most of the anit seg fault is reduntant but at this point I keep readding
 //impssible seg fault situations so it is in for next time
 void insertRebalance(Node* newNode, Node* &root) {
+  cout << "root: " << root->getNumber() << endl;
+  
   cout << "insertRebalence" << endl;
   Node* k = newNode;
   //while loop since you cant breack rule if your parent is black
@@ -720,6 +726,7 @@ void deleteAlert(Node* toDelete, Node* &root) {
   //(it might botch the delete) need to probably redo that
 
   cout << "DONE" << endl;
+  cout << "root: " << root->getNumber() << endl;
 }
 
 void deleteRebalance(Node* x, Node* &root) {
