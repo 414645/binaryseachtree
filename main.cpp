@@ -726,6 +726,7 @@ void deleteRebalance(Node* x, Node* &root) {
   //sibling
   Node* s = NULL;
   cout << "rebalancing" << endl;
+  cout << "root = " << root->getNumber() << ", or: " << root << endl;
 
   while (x != root && x->getColor() == 0) {
     //do one side so it is just mirroring
@@ -875,7 +876,7 @@ void deleteRebalance(Node* x, Node* &root) {
 	//print(root, 0);
       }
       else {
-	//cout << "what?" << endl;
+	cout << "what?" << endl;
 	//one (or both) of s children is red
 	if(s->getLeft()->getColor() == 0) {
 	  s->getRight()->setColor(0);
