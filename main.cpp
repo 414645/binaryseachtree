@@ -718,10 +718,42 @@ void deleteAlert(Node* toDelete, Node* &root) {
   cout << "root: " << root->getNumber() << endl;
   cout << toDelete->getNumber() << endl;
   //exit(1);
+  bool rebalance = true;
+  if (toDelete == NULL) {
+    rebalance = false;
+  }
+  else if (toDelete->getColor() == 1) {
+    //dont need to rebalance
+  }
+  else {
+    //there is a case where to delete is black but has a solo red child
+    //deal with that now
+    if (toDelete->getRight() == NULL) {
+      if (toDelete->getLeft() != NULL) {
+	if (toDelete->getLeft()->getColor() == 1) {
+	  //child become black
+	  toDelete->getLeft()->setColor(0);
+	  //and go straight to deletion of to delete
+	  rebalance = false;
+	  cout << "skip balence" << endl;
+	}
+      }
+    }
+    if (toDelete->getLeft() == NULL) {
+      if (toDelete->getRight() != NULL) {
+	if (toDelete->getRight()->getColor() == 1) {
+	  //child become black
+	  toDelete->getRight()->setColor(0);
+	  //and go straight to deletion of to delete
+	  rebalance = false;
+	  cout << "skip balence" << endl;
+	}
+      }
+    }
+  }
   
-
   //call delete rebalancing
-  if (toDelete != NULL) {
+  if (rebalance == true) {
     deleteRebalance(toDelete, root);
   }
     
