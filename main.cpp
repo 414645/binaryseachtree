@@ -312,10 +312,12 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
   }
   else if(root->getNumber() == thing) {
     //remove current, current = root
+    cout << "remove current, current = NULL" << endl;
 
     //if this is the only thing in the tree
     if(current->getRight() == NULL && current->getLeft() == NULL) {
       //just delete this one
+      cout << "empty tree" << endl;
       root = NULL;
       delete current;
 
@@ -349,6 +351,7 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
     
     else if(current->getLeft() != NULL  && current->getRight() != NULL) {
       //two chidren
+      cout << "two children" << endl;
       //go right once, then left untill getLeft() = NULL
       //delete that one
       //then replace me with them
@@ -374,6 +377,7 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
       current->setParent(temp->getParent());
       
     }
+    cout << "done with root" << endl;
   }
   else if (current->getNumber() == thing) {
     //remove current thing somehow
@@ -507,7 +511,7 @@ void remove(Node* &root, Node* current, Node* previous, int thing) {
     remove(root, current->getLeft(), current, thing);
   }
 
-  cout << "problem root: " << root->getNumber() << endl;
+  //cout << "problem root: " << root->getNumber() << endl;
 }
 bool search(Node* current, int thing) {
   //possibly retruns
