@@ -838,6 +838,10 @@ void deleteRebalance(Node* x, Node* &root) {
       if (pass == true) {
 	//make s red and set x to parent
 	s->setColor(1);
+
+	//not tested
+	//x->getParent()->setColor(0);
+	
 	x = x->getParent();
       }
       else {
@@ -958,8 +962,10 @@ void deleteRebalance(Node* x, Node* &root) {
       cout << "color " << x->getColor() << endl;
     }
   }
+  x->setColor(0);
+  
   if (x != root && x->getColor() == 0) {
-    cout << "THIS IS BROKEN !?!" << endl;
+    //cout << "THIS IS BROKEN !?!" << endl;
   }
   cout << "x: " << x << " root: " << root << endl;
   cout << "x.color = " << x->getColor() << endl;
