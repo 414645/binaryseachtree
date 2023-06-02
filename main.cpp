@@ -912,7 +912,9 @@ void deleteRebalance(Node* x, Node* &root) {
       }
       
       cout << "pass: " << pass << endl;
-
+      print(root, 0);
+      cout << root->getRight()->getNumber() << endl;
+      
       //I think I am missing a case where we deal with this since in visulizer
       //it pushes blackness up a level en then see that right nephew is red
       //with a black sibling
@@ -939,19 +941,44 @@ void deleteRebalance(Node* x, Node* &root) {
 	//print(root, 0);
       }
       else {
+	//couts for me fixing my mirrorign
+	/*
+	cout << "?" << endl;
+	cout << "s: " << s->getNumber() << endl;
+	cout << s->getRight()->getNumber() << endl;
+	cout << s->getLeft() << endl;
+	cout << s->getLeft()->getNumber() << endl;
 	cout << "what?" << endl;
+	//*/
+	
 	//one (or both) of s children is red
+	
+	//I think this is supposed to be right
+	//since this is a rare case when it shoudl not be swapped
+	//when mirroring
 	if(s->getLeft()->getColor() == 0) {
+	  cout << "hi???" << endl;
+	  
 	  s->getRight()->setColor(0);
 	  s->setColor(1);
+
+	  cout << "left rotate incoming" << endl;
+	  print(root, 0);
+	  
 	  leftRotate(s, root);
 	  //agian on the override or not?
 	  s = x->getParent()->getLeft();
 	}
+	cout << "..." << endl;
 	s->setColor(x->getParent()->getColor());
 	x->getParent()->setColor(0);
 	s->getLeft()->setColor(0);
-	rightRotate(x->getParent(), root);
+
+	cout << "printtime" << endl;
+	print(root, 0);
+
+	
+        rightRotate(x->getParent(), root);
 
 	//agian
 	x = root;
@@ -962,6 +989,7 @@ void deleteRebalance(Node* x, Node* &root) {
       cout << "color " << x->getColor() << endl;
     }
   }
+  cout << "x = " << x->getNumber() << endl;
   x->setColor(0);
   
   if (x != root && x->getColor() == 0) {
