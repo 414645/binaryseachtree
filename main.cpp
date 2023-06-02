@@ -956,7 +956,16 @@ void deleteRebalance(Node* x, Node* &root) {
 	//I think this is supposed to be right
 	//since this is a rare case when it shoudl not be swapped
 	//when mirroring
-	if(s->getLeft()->getColor() == 0) {
+	cout << "..." << endl;
+	//cout << s->getLeft()->getColor() << endl;
+	cout << "mark" << endl;
+	bool temp = false;
+	if(s->getRight() != NULL) {
+	  if(s->getRight()->getColor() != 0) {
+	    temp = true;
+	  }
+	}
+	if (temp == true) {
 	  cout << "hi???" << endl;
 	  
 	  s->getRight()->setColor(0);
