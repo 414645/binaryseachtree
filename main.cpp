@@ -36,6 +36,9 @@ void print(Node* current, int tab);
 void printTest(Node* current, int tab, bool color);
 //testprint can show less
 
+//I got bored
+void check(Node* current, Node* previous);
+
 void add(Node* &root, Node* current, Node* previous, int thing);
 //add thing to the binary tree
 
@@ -66,6 +69,10 @@ int main() {
   Node* root = NULL;
   //main loop of program for user input
   while(quit == false) {
+    cout << "checkcall" << endl;
+    check(root, NULL);
+    cout << "endcheck" << endl;
+    
     //ask user input
     cin.getline(input, 80);
     if (strcmp(input, "QUIT") == 0) {
@@ -157,6 +164,30 @@ int main() {
     }
   }
 }
+
+void check(Node* current, Node* previous) {
+  //cout << "check" << endl;
+  //this is the I got bored code
+  //It sould go make sure tree is ok (double linked)
+  if(previous == NULL && current != NULL) {
+    check(current->getRight(), current);
+    check(current->getLeft(), current);
+  }
+  else if(current != NULL) {
+    //update parent
+    if(current == previous->getRight()) {
+      current->setParent(previous);
+    }
+    else if(current == previous->getLeft()) {
+      current->setParent(previous);
+    }
+
+    //recurse
+    check(current->getRight(), current);
+    check(current->getLeft(), current);
+  }
+}
+
 
 //a fun program I made back in hashtable simplified for a binary tree
 void print(Node* current, int tab) {
@@ -846,12 +877,17 @@ void deleteRebalance(Node* x, Node* &root) {
       }
       else {
 	//one (or both) of s children is red
-	if(s->getRight()->getColor() == 0) {
-	  s->getLeft()->setColor(0);
-	  s->setColor(1);
-	  rightRotate(s, root);
-	  //agian on the override or not?
-	  s = x->getParent()->getRight();
+	//original code rewritten for +seg fault resistance
+	//if(s->getRight()->getColor() == 0) {
+	if(s->getLeft()!= NULL) {
+	  //seg fault barrier
+	  if(s->getLeft()->getColor() == 1) {
+	    s->getLeft()->setColor(0);
+	    s->setColor(1);
+	    rightRotate(s, root);
+	    //agian on the override or not?
+	    s = x->getParent()->getRight();
+	  }
 	}
 	s->setColor(x->getParent()->getColor());
 	x->getParent()->setColor(0);
@@ -869,6 +905,12 @@ void deleteRebalance(Node* x, Node* &root) {
 
       //set sibling for future reference
       s = x->getParent()->getLeft();
+      cout << "s: " << s << endl;
+      cout << "x: " << x->getNumber() << endl;
+      cout << "P: " << x->getParent()->getNumber() << endl;
+      //cout
+
+
       //this can be null so yeah
 
       bool blackSibling = true;
@@ -889,8 +931,10 @@ void deleteRebalance(Node* x, Node* &root) {
 	//right not left this time
 	rightRotate(x->getParent(), root);
 
+	cout <<"x: " << x->getNumber() << endl;
 	//overwrite it or not???
 	s = x->getParent()->getLeft();
+	cout << "s: " << s << endl;
       }
 
       bool pass = true;
@@ -913,7 +957,7 @@ void deleteRebalance(Node* x, Node* &root) {
       
       cout << "pass: " << pass << endl;
       print(root, 0);
-      cout << root->getRight()->getNumber() << endl;
+      //cout << root->getRight()->getNumber() << endl;
       
       //I think I am missing a case where we deal with this since in visulizer
       //it pushes blackness up a level en then see that right nephew is red
@@ -927,11 +971,13 @@ void deleteRebalance(Node* x, Node* &root) {
       //Null nodes are black but will cause seg fault
       //if (s->getLeft()->getColor() == 0 && s->getRight()->getColor() == 0)
       if (pass == true) {
-	//cout << "hello??? " << endl;
+	cout << "hello??? " << endl;
 	//cout << s << endl;
 	//cout << s->getNumber() << endl;
 	//make s red and set x to parent
 	//print(root, 0);
+	cout << "S: " << endl;
+	cout << s->getNumber() << endl;
 	
 	s->setColor(1);
 
@@ -959,6 +1005,9 @@ void deleteRebalance(Node* x, Node* &root) {
 	cout << "..." << endl;
 	//cout << s->getLeft()->getColor() << endl;
 	cout << "mark" << endl;
+
+	//this is a more messy way of added the if right exists around the right -> color
+	//you can do it simpler since if you look at the red one and it's null its not red so no if
 	bool temp = false;
 	if(s->getRight() != NULL) {
 	  if(s->getRight()->getColor() != 0) {
@@ -967,6 +1016,8 @@ void deleteRebalance(Node* x, Node* &root) {
 	}
 	if (temp == true) {
 	  cout << "hi???" << endl;
+	  //on remove 110, form failure it did not do the double
+	  //linking correctly somehow 105->parent = 105
 	  
 	  s->getRight()->setColor(0);
 	  s->setColor(1);
